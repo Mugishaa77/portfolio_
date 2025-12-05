@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import type { CSSProperties } from 'react';
-import { FaGithub, FaLinkedin, FaMedium } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaMedium, FaArrowDown } from 'react-icons/fa';
 
 const Hero = () => {
   const styles: {
@@ -8,90 +8,113 @@ const Hero = () => {
     container: CSSProperties;
     h1: CSSProperties;
     subtitle: CSSProperties;
-    techStack: CSSProperties;
+    description: CSSProperties;
+    tagline: CSSProperties;
     socialContainer: CSSProperties;
     socialLink: CSSProperties;
     button: CSSProperties;
+    scrollIndicator: CSSProperties;
   } = {
     section: {
       minHeight: '100vh',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: 'linear-gradient(to bottom right, #0f172a, #1e293b, #134e4a)',
+      backgroundColor: '#0f172a',
+      padding: '2rem 1.5rem',
     },
     container: {
       textAlign: 'center',
-      padding: '0 1rem',
+      maxWidth: '800px',
+      width: '100%',
+      margin: '0 auto',
     },
     h1: {
-      fontSize: 'clamp(3rem, 10vw, 4.5rem)',
+      fontSize: 'clamp(2.5rem, 8vw, 3.5rem)',
       fontWeight: 'bold',
-      marginBottom: '1.5rem',
-      background: 'linear-gradient(to right, #2dd4bf, #67e8f9)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text',
+      marginBottom: '1rem',
+      color: '#f8fafc',
+      letterSpacing: '-0.025em',
     },
     subtitle: {
-      fontSize: 'clamp(1.25rem, 4vw, 1.5rem)',
-      color: '#d1d5db',
-      marginBottom: '2rem',
+      fontSize: 'clamp(1.5rem, 5vw, 2rem)',
+      color: '#60a5fa',
+      fontWeight: '600',
+      marginBottom: '1.5rem',
     },
-    techStack: {
-      display: 'block',
-      color: '#5eead4',
+    description: {
+      fontSize: 'clamp(1rem, 3vw, 1.125rem)',
+      color: '#cbd5e1',
+      lineHeight: '1.7',
+      maxWidth: '600px',
+      margin: '0 auto 2.5rem auto',
+    },
+    tagline: {
+      fontSize: 'clamp(1rem, 3vw, 1.125rem)',
+      color: '#94a3b8',
+      marginBottom: '3rem',
       fontWeight: '500',
-      marginTop: '0.5rem',
     },
     socialContainer: {
       display: 'flex',
       justifyContent: 'center',
-      gap: '3rem',
-      marginBottom: '2rem',
+      gap: '1.5rem',
+      marginBottom: '3rem',
     },
     socialLink: {
-      fontSize: '1.875rem',
-      color: '#d1d5db',
+      fontSize: '1.5rem',
+      color: '#94a3b8',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
     },
     button: {
-      backgroundColor: '#0d9488',
-      color: 'white',
-      padding: '0.75rem 2rem',
-      borderRadius: '0.5rem',
+      backgroundColor: 'transparent',
+      color: '#60a5fa',
+      padding: '1rem 2.5rem',
+      borderRadius: '8px',
       fontWeight: '600',
-      border: '2px solid #5eead4',
+      border: '2px solid rgba(96, 165, 250, 0.3)',
       textDecoration: 'none',
-      display: 'inline-block',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.75rem',
       transition: 'all 0.3s ease',
       cursor: 'pointer',
+      fontSize: '1.125rem',
+    },
+    scrollIndicator: {
+      position: 'absolute',
+      bottom: '2rem',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      color: '#64748b',
+      fontSize: '1.5rem',
+      animation: 'bounce 2s infinite',
     },
   };
 
-  const handleSocialHover = (e: { currentTarget: { style: { color: string; transform: string; }; }; }) => {
-    e.currentTarget.style.color = '#5eead4';
-    e.currentTarget.style.transform = 'scale(1.25)';
+  const handleSocialHover = (e: { currentTarget: { style: { color: string; transform: string; }; }; }, color: string) => {
+    e.currentTarget.style.color = color;
+    e.currentTarget.style.transform = 'translateY(-3px)';
   };
 
   const handleSocialLeave = (e: { currentTarget: { style: { color: string; transform: string; }; }; }) => {
-    e.currentTarget.style.color = '#d1d5db';
-    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.color = '#94a3b8';
+    e.currentTarget.style.transform = 'translateY(0)';
   };
 
-  const handleButtonHover = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; boxShadow: string; transform: string; }; }; }) => {
-    e.currentTarget.style.backgroundColor = '#14b8a6';
-    e.currentTarget.style.borderColor = '#99f6e4';
-    e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(20, 184, 166, 0.5)';
-    e.currentTarget.style.transform = 'scale(1.05)';
+  const handleButtonHover = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string; }; }; }) => {
+    e.currentTarget.style.backgroundColor = 'rgba(96, 165, 250, 0.1)';
+    e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.6)';
+    e.currentTarget.style.transform = 'translateY(-2px)';
+    e.currentTarget.style.color = '#93c5fd';
   };
 
-  const handleButtonLeave = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; boxShadow: string; transform: string; }; }; }) => {
-    e.currentTarget.style.backgroundColor = '#0d9488';
-    e.currentTarget.style.borderColor = '#5eead4';
-    e.currentTarget.style.boxShadow = 'none';
-    e.currentTarget.style.transform = 'scale(1)';
+  const handleButtonLeave = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string; }; }; }) => {
+    e.currentTarget.style.backgroundColor = 'transparent';
+    e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+    e.currentTarget.style.transform = 'translateY(0)';
+    e.currentTarget.style.color = '#60a5fa';
   };
 
   return (
@@ -105,20 +128,40 @@ const Hero = () => {
           Sally Wanga
         </motion.h1>
         
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          style={styles.subtitle}
-        >
-          Frontend Engineer
-          <span style={styles.techStack}>React • TypeScript • React Native</span>
-        </motion.p>
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div style={styles.subtitle}>
+            Frontend Developer & SEO Specialist
+          </div>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
+          style={styles.description}
+        >
+          Building performant, search-optimized web applications with React and WordPress. 
+          I combine modern development practices with technical SEO to create solutions 
+          that drive both user engagement and business growth.
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          style={styles.tagline}
+        >
+          React • TypeScript • WordPress • Technical SEO
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
           style={styles.socialContainer}
         >
           <a 
@@ -126,7 +169,7 @@ const Hero = () => {
             target='_blank' 
             rel='noopener noreferrer'
             style={styles.socialLink}
-            onMouseEnter={handleSocialHover}
+            onMouseEnter={(e) => handleSocialHover(e, '#f1f5f9')}
             onMouseLeave={handleSocialLeave}
           >
             <FaGithub />
@@ -136,7 +179,7 @@ const Hero = () => {
             target='_blank' 
             rel='noopener noreferrer'
             style={styles.socialLink}
-            onMouseEnter={handleSocialHover}
+            onMouseEnter={(e) => handleSocialHover(e, '#0ea5e9')}
             onMouseLeave={handleSocialLeave}
           >
             <FaLinkedin />
@@ -146,7 +189,7 @@ const Hero = () => {
             target='_blank' 
             rel='noopener noreferrer'
             style={styles.socialLink}
-            onMouseEnter={handleSocialHover}
+            onMouseEnter={(e) => handleSocialHover(e, '#f8fafc')}
             onMouseLeave={handleSocialLeave}
           >
             <FaMedium />
@@ -156,7 +199,7 @@ const Hero = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.5 }}
         >
           <a 
             href="#projects"
@@ -164,10 +207,36 @@ const Hero = () => {
             onMouseEnter={handleButtonHover}
             onMouseLeave={handleButtonLeave}
           >
-            View My Work ↓
+            <span>View My Work</span>
+            <FaArrowDown style={{ transition: 'transform 0.3s ease' }} />
           </a>
         </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          style={styles.scrollIndicator}
+        >
+          <FaArrowDown />
+        </motion.div>
       </div>
+
+      {/* Add CSS animation */}
+      <style>{`
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+          }
+          40% {
+            transform: translateX(-50%) translateY(-10px);
+          }
+          60% {
+            transform: translateX(-50%) translateY(-5px);
+          }
+        }
+      `}</style>
     </section>
   );
 };

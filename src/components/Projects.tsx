@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaExternalLinkAlt, FaGithub, FaVideo, FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaGithub, FaVideo, FaStar, FaChevronLeft, FaChevronRight, FaBolt, FaCogs, FaPaintBrush, FaShieldAlt, FaShoppingCart, FaWordpress } from 'react-icons/fa';
 import { useRef, useState, useEffect } from 'react';
 
 // Import your images
@@ -11,9 +11,21 @@ import datadrive from '../media/dataarive.png';
 import taskManager from '../media/task-manager.png';
 import cineseek from '../media/cineseek.png';
 import nexus from '../media/nexus.jpg';
+import nv from '../media/nv.png';
 
 // Organized projects data
 const featuredProjects = [
+  {
+    title: "Nairobi Verified",
+    description: "Online Digital Directory for Verified Nairobi Businesses.",
+    tech: ["React", "TypeScript", "WebSockets", "Node.js", "SEO and content"],
+    image: nv,
+    demoVideo: "https://www.loom.com/share/3408e48b28d04c1cb5a49ed7a7a3f017",
+    codeLink: "https://github.com/Sikos-Marketing-Developer-Team",
+    featured: true,
+    liveLink: "https://nairobiverified.co.ke/",
+    role: "FullStack "
+  },
   {
     title: "Task Management Platform",
     description: "Real-time collaborative task management with advanced synchronization",
@@ -496,98 +508,257 @@ const Projects = () => {
   }, []);
 
   return (
-    <section id="projects" style={{ 
-      padding: isMobile ? '3rem 1rem' : '5rem 1rem', 
-      background: '#111827' 
-    }}>
-      <div style={{ 
-        maxWidth: '1200px', 
-        margin: '0 auto',
-        padding: isMobile ? '0 0.5rem' : '0'
-      }}>
-        
-        {/* Featured Projects */}
-        <div style={{ marginBottom: isMobile ? '3rem' : '4rem' }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            marginBottom: '1rem',
-            flexDirection: isMobile ? 'column' : 'row',
-            gap: isMobile ? '0.5rem' : '0'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <FaStar style={{ color: '#fbbf24', marginRight: '0.5rem' }} />
-              <h2 style={{ 
-                fontSize: isMobile ? '1.75rem' : '2.25rem', 
-                fontWeight: 'bold', 
-                textAlign: 'center',
-                color: 'white',
-                margin: 0
-              }}>
-                Featured Projects
-              </h2>
-              <FaStar style={{ color: '#fbbf24', marginLeft: '0.5rem' }} />
-            </div>
-          </div>
-          <p style={{ 
-            color: '#9CA3AF', 
-            textAlign: 'center', 
-            marginBottom: isMobile ? '2rem' : '3rem',
-            fontSize: isMobile ? '0.9rem' : '1rem',
-            padding: isMobile ? '0 0.5rem' : '0'
-          }}>
-            In-depth solutions showcasing technical proficiency
-          </p>
-          
-          <ProjectCarousel projects={featuredProjects} isFeatured={true} />
-        </div>
-
-        {/* Additional Projects */}
-        <div>
-          <h2 style={{ 
-            fontSize: isMobile ? '1.5rem' : '1.875rem', 
-            fontWeight: 'bold', 
-            textAlign: 'center',
-            color: 'white',
-            marginBottom: '1rem'
-          }}>
-            Other Projects
+   <section
+  id="projects"
+  style={{
+    padding: isMobile ? '3rem 1rem' : '5rem 1rem',
+    background: '#111827',
+  }}
+>
+  <div
+    style={{
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: isMobile ? '0 0.5rem' : '0',
+    }}
+  >
+    {/* Featured Projects */}
+    <div style={{ marginBottom: isMobile ? '3rem' : '4rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '1rem',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? '0.5rem' : '0',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <FaStar style={{ color: '#fbbf24', marginRight: '0.5rem' }} />
+          <h2
+            style={{
+              fontSize: isMobile ? '1.75rem' : '2.25rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: 'white',
+              margin: 0,
+            }}
+          >
+            Featured Projects
           </h2>
-          <p style={{ 
-            color: '#9CA3AF', 
-            textAlign: 'center', 
-            marginBottom: isMobile ? '2rem' : '3rem',
-            fontSize: isMobile ? '0.9rem' : '1rem',
-            padding: isMobile ? '0 0.5rem' : '0'
-          }}>
-            Additional projects demonstrating diverse skills
-          </p>
-          
-          <ProjectCarousel projects={additionalProjects} isFeatured={false} />
+          <FaStar style={{ color: '#fbbf24', marginLeft: '0.5rem' }} />
         </div>
       </div>
+      <p
+        style={{
+          color: '#9CA3AF',
+          textAlign: 'center',
+          marginBottom: isMobile ? '2rem' : '3rem',
+          fontSize: isMobile ? '0.9rem' : '1rem',
+          padding: isMobile ? '0 0.5rem' : '0',
+        }}
+      >
+        In-depth solutions showcasing technical proficiency
+      </p>
 
-      <style>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        
-        @media (max-width: 480px) {
-          #projects {
-            padding-left: 0.5rem;
-            padding-right: 0.5rem;
+      <ProjectCarousel projects={featuredProjects} isFeatured={true} />
+    </div>
+
+    {/* WordPress & CMS Projects (NDA) */}
+    <div 
+      style={{ 
+        marginBottom: isMobile ? '3rem' : '4rem',
+        position: 'relative',
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '1rem',
+          flexDirection: isMobile ? 'column' : 'row',
+          gap: isMobile ? '0.5rem' : '1rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <FaWordpress style={{ color: '#21759b', marginRight: '0.75rem', fontSize: '1.5rem' }} />
+          <h2
+            style={{
+              fontSize: isMobile ? '1.75rem' : '2rem',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              color: 'white',
+              margin: 0,
+              background: 'linear-gradient(90deg, #21759b, #00a0d2)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          >
+            WordPress & CMS Projects
+          </h2>
+          <FaShieldAlt style={{ color: '#60a5fa', marginLeft: '0.75rem', fontSize: '1.5rem' }} />
+        </div>
+      </div>
+      <p
+        style={{
+          color: '#9CA3AF',
+          textAlign: 'center',
+          marginBottom: isMobile ? '2rem' : '3rem',
+          fontSize: isMobile ? '0.9rem' : '1rem',
+          padding: isMobile ? '0 0.5rem' : '0',
+          fontStyle: 'italic',
+          maxWidth: '700px',
+          margin: '0 auto 2rem auto',
+          lineHeight: '1.6',
+        }}
+      >
+        Due to client confidentiality agreements, detailed project information is protected. 
+        Below is a snapshot of the work I've delivered:
+      </p>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
+          gap: isMobile ? '1.5rem' : '2rem',
+          maxWidth: '1000px',
+          margin: '0 auto',
+        }}
+      >
+        {[
+          {
+            icon: <FaShoppingCart />,
+            title: "E-Commerce Solutions",
+            description: "Built responsive WooCommerce stores with custom product displays, seamless checkout processes, and integrated payment systems.",
+            color: "#10b981"
+          },
+          {
+            icon: <FaPaintBrush />,
+            title: "Custom Design Implementation",
+            description: "Translated Figma and Canva designs into fully functional Elementor websites, focusing on visual fidelity and user experience.",
+            color: "#8b5cf6"
+          },
+          {
+            icon: <FaBolt />,
+            title: "Performance & SEO",
+            description: "Optimized sites for speed and search visibility through clean code, proper structure, and mobile-first approaches.",
+            color: "#f59e0b"
+          },
+          {
+            icon: <FaCogs />,
+            title: "Advanced CMS Work",
+            description: "Developed PageLayer websites with modern layouts and interactive components while maintaining brand consistency.",
+            color: "#3b82f6"
           }
-        }
-        
-        @media (max-width: 360px) {
-          #projects {
-            padding-left: 0.25rem;
-            padding-right: 0.25rem;
-          }
-        }
-      `}</style>
-    </section>
+        ].map((item, index) => (
+          <div
+            key={index}
+            style={{
+              background: 'linear-gradient(145deg, #1f2937, #111827)',
+              borderRadius: '12px',
+              padding: isMobile ? '1.5rem' : '2rem',
+              border: '1px solid #374151',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
+              height: '100%',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-4px)';
+              e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.4)';
+              e.currentTarget.style.borderColor = item.color;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.3)';
+              e.currentTarget.style.borderColor = '#374151';
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{
+                background: `rgba(${parseInt(item.color.slice(1, 3), 16)}, ${parseInt(item.color.slice(3, 5), 16)}, ${parseInt(item.color.slice(5, 7), 16)}, 0.1)`,
+                borderRadius: '10px',
+                padding: '0.75rem',
+                marginRight: '1rem',
+                border: `1px solid ${item.color}40`
+              }}>
+                <div style={{ color: item.color, fontSize: '1.25rem' }}>
+                  {item.icon}
+                </div>
+              </div>
+              <h3 style={{
+                color: 'white',
+                fontSize: isMobile ? '1.1rem' : '1.25rem',
+                fontWeight: '600',
+                margin: 0
+              }}>
+                {item.title}
+              </h3>
+            </div>
+            <p style={{
+              color: '#D1D5DB',
+              lineHeight: '1.6',
+              fontSize: isMobile ? '0.9rem' : '1rem',
+              margin: 0
+            }}>
+              {item.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Additional Projects */}
+    <div>
+      <h2
+        style={{
+          fontSize: isMobile ? '1.5rem' : '1.875rem',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          color: 'white',
+          marginBottom: '1rem',
+        }}
+      >
+        Other Projects
+      </h2>
+      <p
+        style={{
+          color: '#9CA3AF',
+          textAlign: 'center',
+          marginBottom: isMobile ? '2rem' : '3rem',
+          fontSize: isMobile ? '0.9rem' : '1rem',
+          padding: isMobile ? '0 0.5rem' : '0',
+        }}
+      >
+        Additional projects demonstrating diverse skills
+      </p>
+
+      <ProjectCarousel projects={additionalProjects} isFeatured={false} />
+    </div>
+  </div>
+
+  <style>{`
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    
+    @media (max-width: 480px) {
+      #projects {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      #projects {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+      }
+    }
+  `}</style>
+</section>
   );
 };
 
