@@ -3,17 +3,11 @@ import { FaExternalLinkAlt, FaGithub, FaVideo, FaStar, FaChevronLeft, FaChevronR
 import { useRef, useState, useEffect } from 'react';
 
 // Import your images
-import AtlasHome from '../media/atlas_home.png';
-import EvergreenHome from '../media/evergreen_home.png';
-import jawabuOne from '../media/jawabu_one.png';
-import DarasaniOne from '../media/darasani_one.png';
-import datadrive from '../media/dataarive.png';
 import taskManager from '../media/task-manager.png';
-import cineseek from '../media/cineseek.png';
 import nexus from '../media/nexus.jpg';
 import nv from '../media/nv.png';
 
-// Organized projects data
+// Updated featured projects - keeping Nairobi Verified, Task Management Platform, and React Native Mobile App
 const featuredProjects = [
   {
     title: "Nairobi Verified",
@@ -24,7 +18,7 @@ const featuredProjects = [
     codeLink: "https://github.com/Sikos-Marketing-Developer-Team",
     featured: true,
     liveLink: "https://nairobiverified.co.ke/",
-    role: "FullStack "
+    role: "FullStack"
   },
   {
     title: "Task Management Platform",
@@ -35,20 +29,10 @@ const featuredProjects = [
     codeLink: "https://github.com/Mugishaa77/task-manager",
     featured: true,
     liveLink: "https://task-manager-swart-two.vercel.app/",
-    role: "FullStack "
+    role: "FullStack"
   },
   {
-    title: "Datadrive",
-    description: "A logistics optimization platform utilizing real-time data for efficient fleet and delivery management.",
-    tech: ["React.js", "TypeScript", "Vite", "Tailwind CSS", "Axios", "SCSS"],
-    image: datadrive,
-    liveLink: "https://datadrive.africa/",
-    codeLink: "https://github.com/DataDrive-africa",
-    featured: true,
-    role: "Frontend"
-  },
-   {
-    title: "Social Media Mobile App", 
+    title: "React Native Mobile App", 
     description: "React Native social feed with real-time updates and smooth animations",
     tech: ["React Native", "TypeScript", "Firebase", "Redux"],
     image: nexus,
@@ -57,57 +41,6 @@ const featuredProjects = [
     featured: true,
     role: "FullStack"
   },
-  {
-    title: "Atlas Tea Brokers Ltd",
-    description: "A digital platform enhancing tea auction visibility and market insights for brokers and buyers.",
-    tech: ["MongoDB", "Express.js", "React.js", "Node.js"],
-    image: AtlasHome,
-    liveLink: "https://atlas-omega.vercel.app/",
-    codeLink: "https://github.com/Mugishaa77/atlas",
-    featured: true,
-    role: "FullStack"
-  },
- 
-];
-
-const additionalProjects = [
-  {
-    title: "Movie Discovery PWA",
-    description: "Progressive Web App with offline functionality and advanced caching",
-    tech: ["React", "PWA", "Service Workers", "TMDB API"],
-    image: cineseek, 
-    demoVideo: "https://www.loom.com/share/8b94e8d8e4ee4f3898f943aa55c4e121?sid=b52f828a-5897-4a6d-97dc-f460ce9986ec",
-    codeLink: "https://github.com/Mugishaa77/alx-project-0x14",
-    role: "Frontend"
-  },  
-  {
-    title: "Jawabu Events",
-    description: "An events booking website providing seamless service reservations and location-based listings.",
-    tech: ["React.js", "Bootstrap", "HTML", "CSS"],
-    image: jawabuOne,
-    liveLink: "https://jawabu-kappa.vercel.app/",
-    codeLink: "https://github.com/Mugishaa77/jawabu",
-    role: "FullStack"
-  },
-  {
-    title: "Darasani Hub",
-    description: "A tutoring platform connecting students with qualified tutors for personalized learning experiences.",
-    tech: ["React.js", "Tailwind CSS", "Bootstrap", "HTML/CSS"],
-    image: DarasaniOne,
-    liveLink: "https://sal-darasani.vercel.app/",
-    codeLink: "https://github.com/Darasani-Hub",
-    role: "Frontend"
-  },
-  {
-    title: "Evergreen Shopping Basket",
-    description: "An online shopping platform for fresh market produce with an integrated shopping cart system.",
-    tech: ["React.js", "Node.js", "MongoDB", "Express.js", "JWT", "Bootstrap"],
-    image: EvergreenHome,
-    liveLink: "https://new-evergreen.vercel.app/",
-    codeLink: "https://github.com/Mugishaa77/new-evergreen",
-    role: "FullStack"
-  },
- 
 ];
 
 interface Project {
@@ -710,33 +643,7 @@ const Projects = () => {
       </div>
     </div>
 
-    {/* Additional Projects */}
-    <div>
-      <h2
-        style={{
-          fontSize: isMobile ? '1.5rem' : '1.875rem',
-          fontWeight: 'bold',
-          textAlign: 'center',
-          color: 'white',
-          marginBottom: '1rem',
-        }}
-      >
-        Other Projects
-      </h2>
-      <p
-        style={{
-          color: '#9CA3AF',
-          textAlign: 'center',
-          marginBottom: isMobile ? '2rem' : '3rem',
-          fontSize: isMobile ? '0.9rem' : '1rem',
-          padding: isMobile ? '0 0.5rem' : '0',
-        }}
-      >
-        Additional projects demonstrating diverse skills
-      </p>
-
-      <ProjectCarousel projects={additionalProjects} isFeatured={false} />
-    </div>
+    {/* Note: The "Other Projects" section has been completely removed */}
   </div>
 
   <style>{`
