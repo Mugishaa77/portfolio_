@@ -6,9 +6,20 @@ import { useRef, useState, useEffect } from 'react';
 import taskManager from '../media/task-manager.png';
 import nexus from '../media/nexus.jpg';
 import nv from '../media/nv.png';
-
+import discoverGolf from '../media/discover_golf.png';
 // Updated featured projects - keeping Nairobi Verified, Task Management Platform, and React Native Mobile App
 const featuredProjects = [
+   {
+    title: "Discover Golf",
+    description: "Online presence for a golf platform for children and other interested parties.",
+    tech: ["React", "TypeScript", "SEO and content"],
+    image: discoverGolf,
+    demoVideo: "https://www.loom.com/share/60a1a812655a4bbdaf563a3087c2d0d6",
+    codeLink: "https://github.com/Mugishaa77/discover-golf",
+    featured: true,
+    liveLink: "https://discover-golf-lime.vercel.app/",
+    role: "FullStack"
+  },
   {
     title: "Nairobi Verified",
     description: "Online Digital Directory for Verified Nairobi Businesses.",
