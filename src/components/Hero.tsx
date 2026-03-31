@@ -20,7 +20,8 @@ const Hero = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#0f172a',
+      backgroundColor: '#0f172a', // base dark
+      backgroundImage: 'radial-gradient(circle at 10% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 70%)',
       padding: '2rem 1.5rem',
     },
     container: {
@@ -38,7 +39,7 @@ const Hero = () => {
     },
     subtitle: {
       fontSize: 'clamp(1.5rem, 5vw, 2rem)',
-      color: '#60a5fa',
+      color: '#6366f1', // indigo – modern full‑stack vibe
       fontWeight: '600',
       marginBottom: '1.5rem',
     },
@@ -69,11 +70,11 @@ const Hero = () => {
     },
     button: {
       backgroundColor: 'transparent',
-      color: '#60a5fa',
+      color: '#6366f1',
       padding: '1rem 2.5rem',
       borderRadius: '8px',
       fontWeight: '600',
-      border: '2px solid rgba(96, 165, 250, 0.3)',
+      border: '2px solid rgba(99, 102, 241, 0.3)',
       textDecoration: 'none',
       display: 'inline-flex',
       alignItems: 'center',
@@ -93,48 +94,45 @@ const Hero = () => {
     },
   };
 
-  const handleSocialHover = (e: { currentTarget: { style: { color: string; transform: string; }; }; }, color: string) => {
+  const handleSocialHover = (e: { currentTarget: { style: { color: string; transform: string } } }, color: string) => {
     e.currentTarget.style.color = color;
     e.currentTarget.style.transform = 'translateY(-3px)';
   };
-
-  const handleSocialLeave = (e: { currentTarget: { style: { color: string; transform: string; }; }; }) => {
+  const handleSocialLeave = (e: { currentTarget: { style: { color: string; transform: string } } }) => {
     e.currentTarget.style.color = '#94a3b8';
     e.currentTarget.style.transform = 'translateY(0)';
   };
-
-  const handleButtonHover = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string; }; }; }) => {
-    e.currentTarget.style.backgroundColor = 'rgba(96, 165, 250, 0.1)';
-    e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.6)';
+  const handleButtonHover = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string } } }) => {
+    e.currentTarget.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
+    e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.6)';
     e.currentTarget.style.transform = 'translateY(-2px)';
-    e.currentTarget.style.color = '#93c5fd';
+    e.currentTarget.style.color = '#a5b4fc';
   };
-
-  const handleButtonLeave = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string; }; }; }) => {
+  const handleButtonLeave = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string } } }) => {
     e.currentTarget.style.backgroundColor = 'transparent';
-    e.currentTarget.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+    e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.3)';
     e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.color = '#60a5fa';
+    e.currentTarget.style.color = '#6366f1';
   };
 
   return (
     <section style={styles.section}>
       <div style={styles.container}>
-        <motion.h1 
+        <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           style={styles.h1}
         >
           Sally Wanga
         </motion.h1>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
           <div style={styles.subtitle}>
-            Frontend Developer & SEO Specialist
+            Software Engineer
           </div>
         </motion.div>
 
@@ -144,9 +142,8 @@ const Hero = () => {
           transition={{ delay: 0.2 }}
           style={styles.description}
         >
-          Building performant, search-optimized web applications with React and WordPress. 
-          I combine modern development practices with technical SEO to create solutions 
-          that drive both user engagement and business growth.
+          I build full‑stack web applications with Django, React, and REST APIs.
+          Focused on scalable backends, clean frontends, and systems that just work.
         </motion.p>
 
         <motion.p
@@ -155,7 +152,7 @@ const Hero = () => {
           transition={{ delay: 0.3 }}
           style={styles.tagline}
         >
-          React • TypeScript • WordPress • Technical SEO
+          Django • React • TypeScript • Python • PostgreSQL • Docker
         </motion.p>
 
         <motion.div
@@ -164,9 +161,9 @@ const Hero = () => {
           transition={{ delay: 0.4 }}
           style={styles.socialContainer}
         >
-          <a 
-            href="https://github.com/Mugishaa77" 
-            target='_blank' 
+          <a
+            href="https://github.com/Mugishaa77"
+            target='_blank'
             rel='noopener noreferrer'
             style={styles.socialLink}
             onMouseEnter={(e) => handleSocialHover(e, '#f1f5f9')}
@@ -174,9 +171,9 @@ const Hero = () => {
           >
             <FaGithub />
           </a>
-          <a 
-            href="https://www.linkedin.com/in/swugisha/" 
-            target='_blank' 
+          <a
+            href="https://www.linkedin.com/in/swugisha/"
+            target='_blank'
             rel='noopener noreferrer'
             style={styles.socialLink}
             onMouseEnter={(e) => handleSocialHover(e, '#0ea5e9')}
@@ -184,9 +181,9 @@ const Hero = () => {
           >
             <FaLinkedin />
           </a>
-          <a 
-            href="https://swugisha.medium.com/" 
-            target='_blank' 
+          <a
+            href="https://swugisha.medium.com/"
+            target='_blank'
             rel='noopener noreferrer'
             style={styles.socialLink}
             onMouseEnter={(e) => handleSocialHover(e, '#f8fafc')}
@@ -201,7 +198,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <a 
+          <a
             href="#projects"
             style={styles.button}
             onMouseEnter={handleButtonHover}
@@ -212,7 +209,6 @@ const Hero = () => {
           </a>
         </motion.div>
 
-        {/* Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -223,7 +219,6 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* Add CSS animation */}
       <style>{`
         @keyframes bounce {
           0%, 20%, 50%, 80%, 100% {

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0B1F3A, #948dad);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            color: #333;
+            width: 450px;
+            padding: 60px 40px;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #0B1F3A;
+            font-size: 26px;
+        }
+
+        .premium {
+            font-size: 22px;
+            margin-bottom: 40px;
+            color: #444;
+        }
+
+        .amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #be8c98;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 16px;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            background-color: #34B233; /* M-Pesa green */
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2c9a2b;
+        }
+
+        .secure-note {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Secure Payment</h2>
+
+    <div class="premium">
+        Your Premium is:
+        <div class="amount">KES {{ premium }}</div>
+    </div>
+
+    <form action="/pay" method="post">
+        <button type="submit">Pay with M-Pesa</button>
+    </form>
+
+    <div class="secure-note">
+        Transactions are processed securely.
+    </div>
+</div>
+
+</body>
+</html>

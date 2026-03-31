@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personal Details</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0B1F3A, #be8c98);
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        .box {
+            background: #ffffff;
+            width: 450px;
+            padding: 50px 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 35px;
+            color: #0B1F3A;
+            font-size: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #be8c98;
+            box-shadow: 0 0 6px rgba(190, 140, 152, 0.4);
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: #be8c98;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a9727f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Personal Details</h2>
+
+    <form action="/cover_select" method="post">
+        <input type="text" name="fullname" placeholder="Full Name" required>
+        <input type="text" name="id_number" placeholder="ID Number" required>
+        <input type="date" name="dob" required>
+        <input type="text" name="mobile" placeholder="Mobile Number" required>
+        <input type="email" name="email" placeholder="Email (Optional)">
+        <button type="submit">Next</button>
+    </form>
+</div>
+
+</body>
+</html>

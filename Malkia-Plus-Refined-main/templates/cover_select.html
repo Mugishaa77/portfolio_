@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Choose Cover</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0B1F3A, #be8c98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            color: #333;
+            width: 450px;
+            padding: 50px 40px;
+            border-radius: 14px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 35px;
+            color: #0B1F3A;
+            font-size: 24px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #be8c98;
+            box-shadow: 0 0 5px rgba(190, 140, 152, 0.5);
+        }
+
+        button {
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: #be8c98;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a9727f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Choose Your Cover</h2>
+
+    <form action="/upload" method="post">
+        <select name="tier" required>
+            <option value="">Select Tier</option>
+            <option>First Tier: Cancer, Dermatology & Last Expense</option>
+            <option>Second Tier: Cancer, Dermatology, Last Expense + Wellness & Surgical</option>
+        </select>
+
+        <select name="option" required>
+            <option value="">Select Option</option>
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+            <option>Option 4</option>
+            <option>Option 5</option>
+            <option>Option 6</option>
+            <option>Option 7</option>
+        </select>
+
+        <button type="submit">Next</button>
+    </form>
+</div>
+
+</body>
+</html>

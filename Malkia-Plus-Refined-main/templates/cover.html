@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Malkia Plus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            background:  linear-gradient(135deg, #0B1F3A, #be8c98);
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        .box {
+            background: rgba(94, 79, 79, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 60px 50px;
+            border-radius: 20px;
+            width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        details {
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        details p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #ed8ba5;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e4d9b5;
+        }
+    </style>
+
+</head>
+<body class="cover-page">
+
+<div class="box">
+    <h1>Malkia Plus</h1>
+    <div class="tagline">Empowering Women Through Microinsurance</div>
+
+    <details>
+        <summary>What is Malkia Plus?</summary>
+        <p>
+            Malkia Plus is a women-focused microinsurance solution designed to provide
+            financial protection against cancer, dermatological conditions, and last
+            expense costs. It ensures affordable premiums, simplified claims processing,
+            and secure digital verification to promote transparency and reduce fraud.
+        </p>
+    </details>
+
+    <form action="/details" method="post">
+        <input type="text" name="contact" placeholder="Phone or Email" required>
+        <button type="submit">Get Started</button>
+    </form>
+</div>
+
+</body>
+</html>

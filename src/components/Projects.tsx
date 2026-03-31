@@ -17,7 +17,7 @@ const featuredProjects = [
     demoVideo: "https://www.loom.com/share/60a1a812655a4bbdaf563a3087c2d0d6",
     codeLink: "https://github.com/Mugishaa77/discover-golf",
     featured: true,
-    liveLink: "https://discover-golf-lime.vercel.app/",
+    liveLink: "https://discovergolf.net/",
     role: "FullStack"
   },
   {

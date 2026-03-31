@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Documents</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0B1F3A, #be8c98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            color: #333;
+            width: 420px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            color: #0B1F3A;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .consent {
+            font-size: 14px;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #be8c98;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #a9727f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Medical Documents Upload</h2>
+
+    <form action="/calculate" method="post" enctype="multipart/form-data">
+
+        <div class="consent">
+            <input type="checkbox" name="consent" required>
+            I consent to processing of my medical reports for claim verification, fraud detection and regulatory compliance.
+        </div>
+
+        <input type="file" name="medical" required>
+
+        <button type="submit">Calculate Premium</button>
+
+    </form>
+</div>
+
+</body>
+</html>
