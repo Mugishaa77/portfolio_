@@ -1,6 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Scroll indicator left border */
+body {
+  font-family: 'Nunito', sans-serif;
+  border-left: 4px solid #f0e6dd;
+  transition: border-left-color 0.1s ease;
+}
 
 /* Manual color and text utilities since Tailwind might not be generating them */
 /* COMPLETE MANUAL CSS - All Tailwind utilities we need */
@@ -179,14 +188,16 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
-  background-color: #111827;
-  color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif; 
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  border-left: 4px solid rgba(225, 130, 153, 0);
+  transition: border-left-color 0.1s linear;
+}
 html {
   scroll-behavior: smooth;
 }
@@ -403,3 +414,29 @@ a {
 .text-purple-400 {
   color: #a78bfa;
 }
+
+/* New color utilities for the palette */
+.bg-sandstone { background-color: #E6D4BF; }
+.bg-viridian { background-color: #679F9F; }
+.bg-heather { background-color: #877499; }
+.bg-candy { background-color: #E18299; }
+.bg-azur { background-color: #2D4729; }
+
+.text-viridian { color: #679F9F; }
+.text-heather { color: #877499; }
+.text-candy { color: #E18299; }
+.text-azur { color: #2D4729; }
+
+.border-viridian { border-color: #679F9F; }
+.border-heather { border-color: #877499; }
+.border-candy { border-color: #E18299; }
+
+.hover\:bg-viridian\/90:hover { background-color: rgba(103, 159, 159, 0.9); }
+.hover\:text-viridian:hover { color: #679F9F; }
+.hover\:border-viridian\/50:hover { border-color: rgba(103, 159, 159, 0.5); }
+
+/* If you need opacity variants like bg-viridian/5, add them manually */
+.bg-viridian\/5 { background-color: rgba(103, 159, 159, 0.05); }
+.bg-viridian\/10 { background-color: rgba(103, 159, 159, 0.1); }
+.border-viridian\/40 { border-color: rgba(103, 159, 159, 0.4); }
+.border-viridian\/30 { border-color: rgba(103, 159, 159, 0.3); }

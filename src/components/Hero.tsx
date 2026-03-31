@@ -1,237 +1,66 @@
 import { motion } from 'framer-motion';
-import type { CSSProperties } from 'react';
-import { FaGithub, FaLinkedin, FaMedium, FaArrowDown } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaMedium } from 'react-icons/fa';
 
 const Hero = () => {
-  const styles: {
-    section: CSSProperties;
-    container: CSSProperties;
-    h1: CSSProperties;
-    subtitle: CSSProperties;
-    description: CSSProperties;
-    tagline: CSSProperties;
-    socialContainer: CSSProperties;
-    socialLink: CSSProperties;
-    button: CSSProperties;
-    scrollIndicator: CSSProperties;
-  } = {
-    section: {
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#0f172a', // base dark
-      backgroundImage: 'radial-gradient(circle at 10% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 70%)',
-      padding: '2rem 1.5rem',
-    },
-    container: {
-      textAlign: 'center',
-      maxWidth: '800px',
-      width: '100%',
-      margin: '0 auto',
-    },
-    h1: {
-      fontSize: 'clamp(2.5rem, 8vw, 3.5rem)',
-      fontWeight: 'bold',
-      marginBottom: '1rem',
-      color: '#f8fafc',
-      letterSpacing: '-0.025em',
-    },
-    subtitle: {
-      fontSize: 'clamp(1.5rem, 5vw, 2rem)',
-      color: '#6366f1', // indigo – modern full‑stack vibe
-      fontWeight: '600',
-      marginBottom: '1.5rem',
-    },
-    description: {
-      fontSize: 'clamp(1rem, 3vw, 1.125rem)',
-      color: '#cbd5e1',
-      lineHeight: '1.7',
-      maxWidth: '600px',
-      margin: '0 auto 2.5rem auto',
-    },
-    tagline: {
-      fontSize: 'clamp(1rem, 3vw, 1.125rem)',
-      color: '#94a3b8',
-      marginBottom: '3rem',
-      fontWeight: '500',
-    },
-    socialContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      gap: '1.5rem',
-      marginBottom: '3rem',
-    },
-    socialLink: {
-      fontSize: '1.5rem',
-      color: '#94a3b8',
-      transition: 'all 0.3s ease',
-      cursor: 'pointer',
-    },
-    button: {
-      backgroundColor: 'transparent',
-      color: '#6366f1',
-      padding: '1rem 2.5rem',
-      borderRadius: '8px',
-      fontWeight: '600',
-      border: '2px solid rgba(99, 102, 241, 0.3)',
-      textDecoration: 'none',
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '0.75rem',
-      transition: 'all 0.3s ease',
-      cursor: 'pointer',
-      fontSize: '1.125rem',
-    },
-    scrollIndicator: {
-      position: 'absolute',
-      bottom: '2rem',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      color: '#64748b',
-      fontSize: '1.5rem',
-      animation: 'bounce 2s infinite',
-    },
-  };
-
-  const handleSocialHover = (e: { currentTarget: { style: { color: string; transform: string } } }, color: string) => {
-    e.currentTarget.style.color = color;
-    e.currentTarget.style.transform = 'translateY(-3px)';
-  };
-  const handleSocialLeave = (e: { currentTarget: { style: { color: string; transform: string } } }) => {
-    e.currentTarget.style.color = '#94a3b8';
-    e.currentTarget.style.transform = 'translateY(0)';
-  };
-  const handleButtonHover = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string } } }) => {
-    e.currentTarget.style.backgroundColor = 'rgba(99, 102, 241, 0.1)';
-    e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.6)';
-    e.currentTarget.style.transform = 'translateY(-2px)';
-    e.currentTarget.style.color = '#a5b4fc';
-  };
-  const handleButtonLeave = (e: { currentTarget: { style: { backgroundColor: string; borderColor: string; transform: string; color: string } } }) => {
-    e.currentTarget.style.backgroundColor = 'transparent';
-    e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.3)';
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.color = '#6366f1';
-  };
-
   return (
-    <section style={styles.section}>
-      <div style={styles.container}>
+    <section id="hero" className="min-h-screen flex items-center px-6 md:px-12 py-20 bg-white">
+      <div className="max-w-3xl w-full">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          style={styles.h1}
+          className="text-4xl md:text-5xl font-light text-azur mb-2"
         >
           Sally Wanga
         </motion.h1>
 
-        <motion.div
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
+          className="text-viridian text-lg md:text-xl font-medium mb-4"
         >
-          <div style={styles.subtitle}>
-            Software Engineer
-          </div>
-        </motion.div>
+          Software Engineer
+        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          style={styles.description}
+          className="text-gray-700 text-base md:text-lg leading-relaxed max-w-xl mb-6"
         >
-          I build full‑stack web applications with Django, React, and REST APIs.
-          Focused on scalable backends, clean frontends, and systems that just work.
+          Full‑stack web applications with Django, React, and REST APIs. Focused on scalable backends, clean frontends, and systems that just work.
         </motion.p>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          style={styles.tagline}
+          className="flex gap-4 mb-8"
         >
-          Django • React • TypeScript • Python • PostgreSQL • Docker
-        </motion.p>
+          <a href="https://github.com/Mugishaa77" target="_blank" rel="noopener noreferrer" className="text-heather hover:text-viridian transition">
+            <FaGithub size={20} />
+          </a>
+          <a href="https://www.linkedin.com/in/swugisha/" target="_blank" rel="noopener noreferrer" className="text-heather hover:text-viridian transition">
+            <FaLinkedin size={20} />
+          </a>
+          <a href="https://swugisha.medium.com/" target="_blank" rel="noopener noreferrer" className="text-heather hover:text-viridian transition">
+            <FaMedium size={20} />
+          </a>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          style={styles.socialContainer}
-        >
-          <a
-            href="https://github.com/Mugishaa77"
-            target='_blank'
-            rel='noopener noreferrer'
-            style={styles.socialLink}
-            onMouseEnter={(e) => handleSocialHover(e, '#f1f5f9')}
-            onMouseLeave={handleSocialLeave}
-          >
-            <FaGithub />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/swugisha/"
-            target='_blank'
-            rel='noopener noreferrer'
-            style={styles.socialLink}
-            onMouseEnter={(e) => handleSocialHover(e, '#0ea5e9')}
-            onMouseLeave={handleSocialLeave}
-          >
-            <FaLinkedin />
-          </a>
-          <a
-            href="https://swugisha.medium.com/"
-            target='_blank'
-            rel='noopener noreferrer'
-            style={styles.socialLink}
-            onMouseEnter={(e) => handleSocialHover(e, '#f8fafc')}
-            onMouseLeave={handleSocialLeave}
-          >
-            <FaMedium />
-          </a>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
         >
           <a
             href="#projects"
-            style={styles.button}
-            onMouseEnter={handleButtonHover}
-            onMouseLeave={handleButtonLeave}
+            className="inline-block px-6 py-3 border border-viridian/40 rounded-full text-viridian hover:bg-viridian/5 transition"
           >
-            <span>View My Work</span>
-            <FaArrowDown style={{ transition: 'transform 0.3s ease' }} />
+            View Work
           </a>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
-          style={styles.scrollIndicator}
-        >
-          <FaArrowDown />
-        </motion.div>
       </div>
-
-      <style>{`
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateX(-50%) translateY(0);
-          }
-          40% {
-            transform: translateX(-50%) translateY(-10px);
-          }
-          60% {
-            transform: translateX(-50%) translateY(-5px);
-          }
-        }
-      `}</style>
     </section>
   );
 };

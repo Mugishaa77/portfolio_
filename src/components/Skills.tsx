@@ -11,177 +11,92 @@ import {
   SiGit,
   SiLinux,
 } from 'react-icons/si';
-import { FaServer, FaDatabase, FaKey } from 'react-icons/fa';
+import { FaServer, FaDatabase, FaKey, FaUsers } from 'react-icons/fa';
 
 const skills = [
-  // Backend & APIs
-  { icon: SiDjango, name: 'Django', level: 88, category: 'backend' },
-  { icon: SiPython, name: 'Python', level: 85, category: 'backend' },
-  { icon: FaServer, name: 'REST APIs', level: 86, category: 'backend' },
-  { icon: SiPostgresql, name: 'PostgreSQL', level: 84, category: 'backend' },
-  { icon: SiDocker, name: 'Docker', level: 80, category: 'backend' },
-
-  // Frontend
-  { icon: SiReact, name: 'React', level: 90, category: 'frontend' },
-  { icon: SiTypescript, name: 'TypeScript', level: 88, category: 'frontend' },
-  { icon: SiTailwindcss, name: 'Tailwind CSS', level: 92, category: 'frontend' },
-  { icon: SiNextdotjs, name: 'Next.js', level: 85, category: 'frontend' },
-
-  // DevOps & Tools
-  { icon: SiGit, name: 'Git/GitHub', level: 88, category: 'devops' },
-  { icon: SiLinux, name: 'Linux', level: 82, category: 'devops' },
-  { icon: FaKey, name: 'JWT Auth', level: 84, category: 'devops' },
-  { icon: FaDatabase, name: 'MySQL', level: 80, category: 'devops' },
+  { icon: SiDjango, name: 'Django', category: 'backend' },
+  { icon: SiPython, name: 'Python', category: 'backend' },
+  { icon: FaServer, name: 'REST APIs', category: 'backend' },
+  { icon: SiPostgresql, name: 'PostgreSQL', category: 'backend' },
+  { icon: SiDocker, name: 'Docker', category: 'backend' },
+  { icon: SiReact, name: 'React', category: 'frontend' },
+  { icon: SiTypescript, name: 'TypeScript', category: 'frontend' },
+  { icon: SiTailwindcss, name: 'Tailwind', category: 'frontend' },
+  { icon: SiNextdotjs, name: 'Next.js', category: 'frontend' },
+  { icon: SiGit, name: 'Git/GitHub', category: 'devops' },
+  { icon: SiLinux, name: 'Linux', category: 'devops' },
+  { icon: FaKey, name: 'JWT Auth', category: 'devops' },
+  { icon: FaDatabase, name: 'MySQL', category: 'devops' },
+  { icon: FaUsers, name: 'Agile', category: 'devops' },
 ];
 
 const Skills = () => {
-  const categories = {
-    backend: skills.filter((s) => s.category === 'backend'),
-    frontend: skills.filter((s) => s.category === 'frontend'),
-    devops: skills.filter((s) => s.category === 'devops'),
-  };
+  const groupedSkills = skills.reduce((acc, skill) => {
+    if (!acc[skill.category]) acc[skill.category] = [];
+    acc[skill.category].push(skill);
+    return acc;
+  }, {} as Record<string, typeof skills>);
 
   return (
-    <section className="py-20 px-4 bg-gray-800">
-      <div className="max-w-6xl mx-auto">
+    <section id="skills" className="py-20 px-6 md:px-12 bg-sandstone">
+      <div className="max-w-4xl w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.5 }}
+          className="mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-indigo-400 to-teal-400 bg-clip-text text-transparent">
-            Technical Skills
-          </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Full‑stack expertise spanning backend architecture, modern frontends, and deployment workflows
-          </p>
+          <h2 className="text-3xl md:text-4xl font-light text-azur mb-3">Tech Stack</h2>
+          <p className="text-gray-600">Tools and technologies I work with daily</p>
         </motion.div>
 
-        {/* Backend & APIs */}
+        <div className="space-y-10">
+          {Object.entries(groupedSkills).map(([category, items]) => (
+            <div key={category}>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-2 h-2 bg-viridian rounded-full"></span>
+                <h3 className="text-sm font-medium uppercase tracking-wide text-heather">
+                  {category === 'backend' && 'Backend & APIs'}
+                  {category === 'frontend' && 'Frontend'}
+                  {category === 'devops' && 'DevOps & Tools'}
+                </h3>
+              </div>
+
+              <div className="overflow-x-auto scrollbar-hide pb-4 -mx-2 px-2">
+                <div className="flex gap-3 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:overflow-visible">
+                  {items.map((skill, idx) => (
+                    <motion.div
+                      key={skill.name}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.03 }}
+                      whileHover={{ scale: 1.02 }}
+                      className="flex-shrink-0 w-28 md:w-auto"
+                    >
+                      <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-heather/20 p-3 text-center transition hover:border-viridian/30 hover:bg-white">
+                        <skill.icon className="text-3xl mx-auto mb-2 text-viridian" />
+                        <span className="text-gray-700 text-xs font-medium block">
+                          {skill.name}
+                        </span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-12"
+          className="mt-12"
         >
-          <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2 text-white">
-            <span className="w-3 h-3 bg-indigo-500 rounded-full"></span>
-            Backend & APIs
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-            {categories.backend.map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-gray-900/50 rounded-xl border border-gray-700 hover:border-indigo-500/30 transition-all"
-              >
-                <skill.icon className="text-4xl mx-auto mb-4 text-indigo-400" />
-                <h3 className="font-semibold mb-2 text-white">{skill.name}</h3>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: index * 0.1, ease: 'easeOut' }}
-                    className="bg-gradient-to-r from-indigo-500 to-purple-500 h-2.5 rounded-full shadow-lg shadow-indigo-500/50"
-                  ></motion.div>
-                </div>
-                <span className="text-sm text-gray-300 mt-2 block">{skill.level}%</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Frontend */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mb-12"
-        >
-          <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2 text-white">
-            <span className="w-3 h-3 bg-teal-500 rounded-full"></span>
-            Frontend
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.frontend.map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-gray-900/50 rounded-xl border border-gray-700 hover:border-teal-500/30 transition-all"
-              >
-                <skill.icon className="text-4xl mx-auto mb-4 text-teal-400" />
-                <h3 className="font-semibold mb-2 text-white">{skill.name}</h3>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: 0.5 + index * 0.1, ease: 'easeOut' }}
-                    className="bg-gradient-to-r from-teal-500 to-cyan-400 h-2.5 rounded-full shadow-lg shadow-teal-500/50"
-                  ></motion.div>
-                </div>
-                <span className="text-sm text-gray-300 mt-2 block">{skill.level}%</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* DevOps & Tools */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-        >
-          <h3 className="text-2xl font-semibold mb-6 flex items-center gap-2 text-white">
-            <span className="w-3 h-3 bg-amber-500 rounded-full"></span>
-            DevOps & Tools
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.devops.map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.6 + index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                className="text-center p-4 bg-gray-900/50 rounded-xl border border-gray-700 hover:border-amber-500/30 transition-all"
-              >
-                <skill.icon className="text-4xl mx-auto mb-4 text-amber-400" />
-                <h3 className="font-semibold mb-2 text-white">{skill.name}</h3>
-                <div className="w-full bg-gray-700 rounded-full h-2.5">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2, delay: 0.7 + index * 0.1, ease: 'easeOut' }}
-                    className="bg-gradient-to-r from-amber-500 to-yellow-400 h-2.5 rounded-full shadow-lg shadow-amber-500/50"
-                  ></motion.div>
-                </div>
-                <span className="text-sm text-gray-300 mt-2 block">{skill.level}%</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Summary */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="mt-12 text-center"
-        >
-          <div className="inline-block p-4 bg-gradient-to-r from-indigo-500/10 via-teal-500/10 to-amber-500/10 rounded-xl border border-gray-700">
-            <p className="text-gray-300">
-              <span className="font-semibold text-white">Full‑stack mindset:</span> I design scalable backends with Django, 
-              build responsive frontends with React, and manage the entire development lifecycle with modern tools.
+          <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/80 rounded-full border border-heather/20 shadow-sm">
+            <span className="text-candy text-sm">⚡</span>
+            <p className="text-gray-600 text-xs">
+              Full‑stack engineer • Django + React • Agile practitioner
             </p>
           </div>
         </motion.div>
