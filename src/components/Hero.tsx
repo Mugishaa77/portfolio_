@@ -2,318 +2,245 @@ import { motion } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaMedium } from 'react-icons/fa';
 
 const Hero = () => {
+  const name = "Sally Wanga";
+
   return (
     <section
       id="hero"
       className="min-h-screen flex items-center px-6 md:px-12 py-20 relative overflow-hidden"
-      style={{ background: 'transparent' }}
+      style={{
+        background: `
+          radial-gradient(circle at 20% 20%, rgba(255, 182, 193, 0.25), transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(173, 216, 230, 0.25), transparent 50%),
+          radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.4), transparent 40%),
+          linear-gradient(180deg, #fdfaf7 0%, #f6efe8 60%, #f3ebe3 100%)
+        `,
+      paddingLeft: '3rem', // To align with the accent line
+      }}
     >
-      {/* Main glass panel (translucent & blurred) */}
+      {/* Glass overlay */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'rgba(246, 246, 244, 0.65)',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-          zIndex: 0,
+          backdropFilter: 'blur(40px) saturate(160%)',
+          background: 'rgba(255,255,255,0.12)',
+          
         }}
       />
 
-      {/* Baby pink water ripples – soft, diffused, moving gently */}
+      {/* Light streak */}
       <div
         aria-hidden
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(circle at 30% 40%, rgba(184, 114, 119, 0.18) 0%, transparent 60%),
-                       radial-gradient(circle at 70% 65%, rgba(184, 114, 119, 0.12) 0%, transparent 65%),
-                       radial-gradient(circle at 45% 20%, rgba(184, 114, 119, 0.1) 0%, transparent 70%)`,
-          filter: 'blur(30px)',
-          animation: 'softRipple 18s ease-in-out infinite alternate',
-          mixBlendMode: 'normal',
-          pointerEvents: 'none',
-          zIndex: 1,
+          background:
+            'linear-gradient(120deg, rgba(255,255,255,0.5), transparent 40%)',
+          opacity: 0.5,
         }}
       />
 
-      {/* Delicate water lines – static but add texture */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(
-            to right,
-            rgba(184, 114, 119, 0.08) 0px,
-            rgba(184, 114, 119, 0.08) 1px,
-            transparent 1px,
-            transparent 100px
-          )`,
-          backgroundSize: '100px 100%',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `repeating-linear-gradient(
-            to bottom,
-            rgba(184, 114, 119, 0.05) 0px,
-            rgba(184, 114, 119, 0.05) 1px,
-            transparent 1px,
-            transparent 100px
-          )`,
-          backgroundSize: '100% 100px',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
+      {/* IRIDESCENT BUBBLES */}
+      {[...Array(7)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ y: 0, opacity: 0 }}
+          animate={{
+            y: [-30, 30, -30],
+            x: [-10, 10, -10],
+            opacity: [0.3, 0.7, 0.3],
+          }}
+          transition={{
+            duration: 8 + i,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          style={{
+            position: 'absolute',
+            top: `${15 + i * 10}%`,
+            left: `${10 + i * 12}%`,
+            width: `${70 + i * 12}px`,
+            height: `${70 + i * 12}px`,
+            borderRadius: '50%',
 
-      {/* Tiny sparkling droplets (static) */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `radial-gradient(circle at 15% 45%, rgba(184, 114, 119, 0.15) 1px, transparent 1px),
-                            radial-gradient(circle at 85% 70%, rgba(184, 114, 119, 0.12) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px, 80px 80px',
-          backgroundPosition: '0 0, 30px 30px',
-          opacity: 0.7,
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
+            // SOAP BUBBLE EFFECT
+            background: `
+              radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), transparent 40%),
+              radial-gradient(circle at 70% 70%, rgba(255,192,203,0.3), transparent 60%),
+              radial-gradient(circle at 40% 80%, rgba(173,216,230,0.3), transparent 60%)
+            `,
+            backdropFilter: 'blur(10px)',
 
-      {/* Thin vertical accent line (pink) */}
+            boxShadow: `
+              inset 0 0 18px rgba(255,255,255,0.7),
+              inset -6px -6px 20px rgba(173,216,230,0.3),
+              inset 6px 6px 20px rgba(255,182,193,0.3),
+              0 10px 40px rgba(134,117,153,0.15)
+            `,
+          }}
+        />
+      ))}
+
+      {/* Accent line */}
       <motion.div
         initial={{ scaleY: 0, opacity: 0 }}
         animate={{ scaleY: 1, opacity: 0.4 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        transition={{ duration: 0.8 }}
         style={{
-          position: 'absolute',
-          left: '2.5rem',
-          top: '15%',
-          height: '60%',
-          width: '2px',
-          background: 'linear-gradient(to bottom, #B87277, #B87277, #B87277)',
-          borderRadius: '2px',
-          transformOrigin: 'top',
-          zIndex: 2,
-        }}
+    position: 'absolute',
+    left: '6px',
+    top: '10%',
+    height: '80%',
+    width: '3px',
+    borderRadius: '3px',
+    background: '#E18298',
+    opacity: 0.5,
+    marginLeft: '2rem', // To align with the accent line
+  }}
       />
 
-      {/* Content container – no extra background, relies on glass behind */}
-      <div
-        className="max-w-3xl w-full relative z-10"
-        style={{
-          paddingLeft: '1.5rem',
-        }}
-      >
+      <div className="max-w-3xl w-full relative z-10 pl-6">
+
         {/* Tag */}
         <motion.div
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.0, duration: 0.5 }}
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
             marginBottom: '16px',
-            padding: '4px 12px',
+            padding: '4px 14px',
             borderRadius: '999px',
-            border: '1px solid rgba(184, 114, 119, 0.5)',
-            background: 'rgba(246, 246, 244, 0.4)',
-            backdropFilter: 'blur(4px)',
+            border: '1px solid #E18298',
+            background: 'rgba(255,255,255,0.3)',
+            backdropFilter: 'blur(10px)',
+            display: 'inline-flex',
+            gap: '8px',
+            marginLeft: '2rem', // To align with the accent line
           }}
         >
-          <span
-            style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: '#B87277',
-              display: 'inline-block',
-            }}
-          />
-          <span
-            style={{
-              fontSize: '11px',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#7E5C5F',
-              fontWeight: 500,
-            }}
-          >
+          <span style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: '#ffb6c1'
+          }} />
+          <span style={{
+            fontSize: '11px',
+            letterSpacing: '0.12em',
+            color: '#8a7ca8'
+          }}>
             Available for work
           </span>
         </motion.div>
 
+        {/* KINETIC NAME */}
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl md:text-5xl font-light mb-2"
-          style={{
-            lineHeight: 1.15,
-            color: '#2C4A4A',
-          }}
+          className="text-5xl md:text-5xl font-light mb-2 ml-4"
+          style={{ color: '#2C4A4A', display: 'flex', flexWrap: 'wrap' }}
         >
-          Sally Wanga
+          {name.split("").map((char, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: i * 0.05,
+                type: 'spring',
+                stiffness: 100
+              }}
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          ))}
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl font-medium mb-4"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '10px',
-            color: '#6F8F8E',
-          }}
-        >
-          <span
-            style={{
-              display: 'inline-block',
-              width: '28px',
-              height: '2px',
-              background: '#B87277',
-              borderRadius: '2px',
-              flexShrink: 0,
-            }}
-          />
-          Software Engineer
-        </motion.p>
-
+        {/* Role */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-base md:text-lg leading-relaxed max-w-xl mb-6"
-          style={{
-            borderLeft: '3px solid rgba(184, 114, 119, 0.6)',
-            paddingLeft: '16px',
-            color: '#4A6A68',
-          }}
+          className="text-xl md:text-xl font-medium mb-4 ml-4"
+          style={{ color: '#6F8F8E', textTransform: 'uppercase'}}
         >
-          Full‑stack web applications with Django, React, and REST APIs. Focused on scalable backends, clean frontends, and systems that just work.
+          Software Engineer
         </motion.p>
 
-        {/* Social icons */}
+        {/* DESCRIPTION (word-by-word reveal) */}
+        <motion.p
+          className="text-lg md:text-lg max-w-xl mb-6"
+          style={{
+            borderLeft: '3px solid #e6d4be',
+            paddingLeft: '16px',
+            color: '#4A6A68',
+            lineHeight: 1.6,
+          }}
+        >
+          {"Full-stack web applications with Django, React, and REST APIs. Focused on scalable backends, clean frontends, and systems that just work."
+            .split(" ")
+            .map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 + i * 0.04 }}
+                style={{ marginRight: '6px' }}
+              >
+                {word}
+              </motion.span>
+            ))}
+        </motion.p>
+
+        {/* Socials */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="flex gap-4 mb-8"
+          transition={{ delay: 0.6 }}
+          className="flex gap-4 mb-8 ml-8"
         >
-          {[
-            { href: 'https://github.com/Mugishaa77', icon: <FaGithub size={20} />, label: 'GitHub' },
-            { href: 'https://www.linkedin.com/in/swugisha/', icon: <FaLinkedin size={20} />, label: 'LinkedIn' },
-            { href: 'https://swugisha.medium.com/', icon: <FaMedium size={20} />, label: 'Medium' },
-          ].map(({ href, icon, label }) => (
+          {[FaGithub, FaLinkedin, FaMedium].map((Icon, i) => (
             <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
+              key={i}
+              href="#"
               style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                background: '#fff',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid #E18298',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '38px',
-                height: '38px',
-                borderRadius: '50%',
-                border: '1.5px solid rgba(184, 114, 119, 0.5)',
-                color: '#7E5C5F',
-                transition: 'all 0.2s ease',
-                background: 'rgba(246, 246, 244, 0.3)',
-                backdropFilter: 'blur(4px)',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background = '#B87277';
-                e.currentTarget.style.borderColor = '#B87277';
-                e.currentTarget.style.color = '#F6F6F4';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background = 'rgba(246, 246, 244, 0.3)';
-                e.currentTarget.style.borderColor = 'rgba(184, 114, 119, 0.5)';
-                e.currentTarget.style.color = '#7E5C5F';
-                e.currentTarget.style.transform = 'translateY(0)';
+                marginLeft: '10px',
               }}
             >
-              {icon}
+              <Icon size={18} />
             </a>
           ))}
         </motion.div>
 
-        {/* CTA button */}
-        <motion.div
+        {/* CTA */}
+        <motion.a
+          href="#projects"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.7 }}
+          style={{
+            padding: '12px 28px',
+            borderRadius: '999px',
+            background: '#fff',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid #679F9E',
+            color: '#679F9E',
+            display: 'inline-block',
+            marginLeft: '12px!important',
+            fontWeight: 500,
+          }}
         >
-          <a
-            href="#projects"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '12px 28px',
-              borderRadius: '999px',
-              border: '1.5px solid #B87277',
-              color: '#B87277',
-              fontSize: '15px',
-              fontWeight: 500,
-              textDecoration: 'none',
-              transition: 'all 0.25s ease',
-              background: 'rgba(246, 246, 244, 0.3)',
-              backdropFilter: 'blur(4px)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = '#B87277';
-              e.currentTarget.style.color = '#F6F6F4';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(184, 114, 119, 0.3)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.borderColor = '#B87277';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'rgba(246, 246, 244, 0.3)';
-              e.currentTarget.style.color = '#B87277';
-              e.currentTarget.style.boxShadow = 'none';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = '#B87277';
-            }}
-          >
-            View Work
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ transition: 'transform 0.2s' }}>
-              <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </a>
-        </motion.div>
+          View Work
+        </motion.a>
       </div>
-
-      {/* Animation keyframes (very gentle) */}
-      <style>{`
-        @keyframes softRipple {
-          0% {
-            transform: scale(1);
-            opacity: 0.6;
-          }
-          100% {
-            transform: scale(1.03);
-            opacity: 0.9;
-          }
-        }
-      `}</style>
     </section>
   );
 };
