@@ -28,12 +28,56 @@ const categoryMeta = {
   devops: { label: 'DevOps & Tools', accent: '#E18298', glow: '#E1829822' },
 };
 
+// ALL skills as ghosted icons, distributed to fill the right side vertically
+const ghostIcons = [
+  // Top area
+  { Icon: SiDjango, color: '#679F9E', top: '3%', left: '82%', size: 58, delay: 0, duration: 14, xOffset: 8, yOffset: -6 },
+  { Icon: SiPython, color: '#7DADDB', top: '10%', left: '88%', size: 62, delay: 1, duration: 12, xOffset: -10, yOffset: 8 },
+  { Icon: FaServer, color: '#E18298', top: '18%', left: '78%', size: 54, delay: 2, duration: 15, xOffset: 6, yOffset: -4 },
+  
+  // Upper-mid (around the dot arc)
+  { Icon: SiPostgresql, color: '#867599', top: '26%', left: '86%', size: 66, delay: 1.5, duration: 13, xOffset: -8, yOffset: 10 },
+  { Icon: SiDocker, color: '#679F9E', top: '34%', left: '80%', size: 60, delay: 0.8, duration: 11, xOffset: 10, yOffset: -8 },
+  { Icon: SiReact, color: '#7DADDB', top: '42%', left: '89%', size: 68, delay: 2.2, duration: 16, xOffset: -6, yOffset: 6 },
+  
+  // Mid (overlapping dot arc area)
+  { Icon: SiTypescript, color: '#E18298', top: '50%', left: '84%', size: 56, delay: 1.2, duration: 14, xOffset: 8, yOffset: -5 },
+  { Icon: SiTailwindcss, color: '#679F9E', top: '58%', left: '91%', size: 52, delay: 2.8, duration: 12, xOffset: -12, yOffset: 9 },
+  { Icon: SiNextdotjs, color: '#7DADDB', top: '66%', left: '79%', size: 64, delay: 0.5, duration: 15, xOffset: 7, yOffset: -7 },
+  
+  // Lower-mid
+  { Icon: SiGit, color: '#867599', top: '74%', left: '87%', size: 58, delay: 1.8, duration: 13, xOffset: -9, yOffset: 8 },
+  { Icon: SiLinux, color: '#E18298', top: '82%', left: '81%', size: 60, delay: 2.5, duration: 11, xOffset: 6, yOffset: -6 },
+  { Icon: FaKey, color: '#679F9E', top: '88%', left: '90%', size: 54, delay: 0.3, duration: 14, xOffset: -7, yOffset: 5 },
+  
+  // Bottom area
+  { Icon: FaDatabase, color: '#7DADDB', top: '94%', left: '83%', size: 56, delay: 1.9, duration: 12, xOffset: 8, yOffset: -4 },
+  { Icon: FaUsers, color: '#E18298', top: '98%', left: '77%', size: 52, delay: 3, duration: 15, xOffset: -5, yOffset: 6 },
+];
+
 const Skills = () => {
   const groupedSkills = skills.reduce((acc, skill) => {
     if (!acc[skill.category]) acc[skill.category] = [];
     acc[skill.category].push(skill);
     return acc;
   }, {} as Record<string, typeof skills>);
+
+  // Dots arc (unchanged, stays in the middle-right area)
+  const dotCount = 8;
+  const centerX = 88;
+  const centerY = 50;
+  const radiusX = 14;
+  const radiusY = 22;
+  const startAngle = -50;
+  const endAngle = 230;
+
+  const dots = Array.from({ length: dotCount }).map((_, i) => {
+    const angle = startAngle + (i / (dotCount - 1)) * (endAngle - startAngle);
+    const rad = (angle * Math.PI) / 180;
+    const left = centerX + radiusX * Math.cos(rad);
+    const top = centerY + radiusY * Math.sin(rad);
+    return { left, top };
+  });
 
   return (
     <section
@@ -66,21 +110,86 @@ const Skills = () => {
         maskImage: 'radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%)',
       }} />
 
-      {/* Large faint circle accent */}
-      <div aria-hidden style={{
-        position: 'absolute', right: '-120px', top: '50%',
-        transform: 'translateY(-50%)',
-        width: '500px', height: '500px', borderRadius: '50%',
-        border: '1.5px solid #86759920',
-        pointerEvents: 'none',
-      }} />
-      <div aria-hidden style={{
-        position: 'absolute', right: '-60px', top: '50%',
-        transform: 'translateY(-50%)',
-        width: '360px', height: '360px', borderRadius: '50%',
-        border: '1.5px solid #679F9E15',
-        pointerEvents: 'none',
-      }} />
+      {/* === ALL GHOSTED ICONS (14 icons, filling the right side from top to bottom) === */}
+      {ghostIcons.map(({ Icon, color, top, left, size, delay, duration, xOffset, yOffset }, idx) => (
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, scale: 0.7 }}
+          animate={{
+            opacity: [0.35, 0.55, 0.35],
+            y: [0, yOffset, 0],
+            x: [0, xOffset, 0],
+            scale: [0.95, 1.05, 0.95],
+          }}
+          transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute',
+            top,
+            left,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
+          <Icon style={{ fontSize: size, color, opacity: 0.45, filter: 'blur(0.8px)' }} />
+        </motion.div>
+      ))}
+
+      {/* === DELICATE PARTICLE RING (dots + dashed line) - unchanged === */}
+      <svg
+        aria-hidden
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      >
+        <path
+          d={`
+            M ${dots[0].left}% ${dots[0].top}%
+            A ${radiusX} ${radiusY} 0 0 1 ${dots[dots.length - 1].left}% ${dots[dots.length - 1].top}%
+          `}
+          fill="none"
+          stroke="#E18298"
+          strokeWidth="1.2"
+          strokeDasharray="3 6"
+          opacity="0.4"
+        />
+      </svg>
+
+      {dots.map((dot, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{
+            opacity: [0.5, 0.85, 0.5],
+            scale: [0.9, 1.2, 0.9],
+            x: [0, (i % 2 === 0 ? 6 : -6), 0],
+            y: [0, (i % 3 === 0 ? -8 : 5), 0],
+          }}
+          transition={{
+            duration: 6 + i,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: i * 0.4,
+          }}
+          style={{
+            position: 'absolute',
+            left: `${dot.left}%`,
+            top: `${dot.top}%`,
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: i % 3 === 0 ? '#E18298' : (i % 3 === 1 ? '#7DADDB' : '#679F9E'),
+            boxShadow: `0 0 8px ${i % 3 === 0 ? '#E18298' : (i % 3 === 1 ? '#7DADDB' : '#679F9E')}`,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      ))}
 
       <div className="max-w-4xl w-full relative z-10">
         {/* Header */}
@@ -129,7 +238,7 @@ const Skills = () => {
                   <div style={{ flex: 1, height: '1px', background: `linear-gradient(to right, ${meta.accent}33, transparent)` }} />
                 </div>
 
-                {/* Skill cards — wrapping grid with generous spacing */}
+                {/* Skill cards */}
                 <div style={{
                   display: 'flex',
                   flexWrap: 'wrap',

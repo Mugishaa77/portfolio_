@@ -30,6 +30,32 @@ const Contact = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Shared glass card style — both columns match
+  const glassCard: React.CSSProperties = {
+    padding: '32px',
+    borderRadius: '20px',
+    background: 'rgba(255,255,255,0.48)',
+    backdropFilter: 'blur(14px)',
+    WebkitBackdropFilter: 'blur(14px)',
+    border: '1px solid rgba(134,117,153,0.18)',
+    boxShadow: '0 4px 24px rgba(134,117,153,0.07), inset 0 1px 0 rgba(255,255,255,0.85)',
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    padding: '10px 14px',
+    borderRadius: '10px',
+    background: 'rgba(255,255,255,0.6)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    border: '1px solid rgba(134,117,153,0.2)',
+    color: '#2C4A4A',
+    fontSize: '14px',
+    outline: 'none',
+    transition: 'all 0.2s',
+    boxSizing: 'border-box' as const,
+  };
+
   return (
     <section
       id="contact"
@@ -40,14 +66,13 @@ const Contact = () => {
     >
       {/* Radial mesh blobs */}
       <div aria-hidden style={{
-        position: 'absolute', inset: 0, zIndex: 0,
+        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
         background: `
           radial-gradient(ellipse at 15% 25%, #86759922 0%, transparent 55%),
           radial-gradient(ellipse at 85% 75%, #679F9E1a 0%, transparent 55%),
           radial-gradient(ellipse at 55% 90%, #E1829818 0%, transparent 60%),
           radial-gradient(ellipse at 70% 10%, #7DADDB18 0%, transparent 50%)
         `,
-        pointerEvents: 'none',
       }} />
 
       {/* Cross-hatch texture */}
@@ -61,23 +86,21 @@ const Contact = () => {
         maskImage: 'radial-gradient(ellipse at 50% 50%, black 35%, transparent 80%)',
       }} />
 
-      {/* Top rainbow hairline — mirrors Projects section */}
+      {/* Top rainbow hairline */}
       <div aria-hidden style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '3px', zIndex: 1,
         background: 'linear-gradient(90deg, transparent, #867599, #E18298, #679F9E, transparent)',
         opacity: 0.45,
       }} />
 
-      {/* Large ghost circle accent */}
+      {/* Ghost circles */}
       <div aria-hidden style={{
-        position: 'absolute', right: '-100px', top: '50%',
-        transform: 'translateY(-50%)',
+        position: 'absolute', right: '-100px', top: '50%', transform: 'translateY(-50%)',
         width: '480px', height: '480px', borderRadius: '50%',
         border: '1.5px solid #86759918', pointerEvents: 'none', zIndex: 0,
       }} />
       <div aria-hidden style={{
-        position: 'absolute', right: '-40px', top: '50%',
-        transform: 'translateY(-50%)',
+        position: 'absolute', right: '-40px', top: '50%', transform: 'translateY(-50%)',
         width: '340px', height: '340px', borderRadius: '50%',
         border: '1.5px solid #679F9E14', pointerEvents: 'none', zIndex: 0,
       }} />
@@ -96,7 +119,7 @@ const Contact = () => {
         filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0,
       }} />
 
-      {/* Wavy bottom accent */}
+      {/* Wavy bottom */}
       <div aria-hidden style={{
         position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100px',
         pointerEvents: 'none', zIndex: 0,
@@ -141,7 +164,7 @@ const Contact = () => {
           </p>
         </motion.div>
 
-        {/* Toast notification */}
+        {/* Toast */}
         <AnimatePresence>
           {status && (
             <motion.div
@@ -151,7 +174,7 @@ const Contact = () => {
               style={{
                 position: 'fixed', top: '16px', right: '16px', zIndex: 50,
                 padding: '12px 20px', borderRadius: '12px',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
                 display: 'flex', alignItems: 'center', gap: '10px',
                 color: '#fff',
                 background: status === 'success'
@@ -167,163 +190,100 @@ const Contact = () => {
           )}
         </AnimatePresence>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start">
+        <div
+          className="grid md:grid-cols-2"
+          style={{ columnGap: '64px', rowGap: '32px', alignItems: 'stretch' }}
+        >
 
           {/* Left — contact info */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            style={{
-              padding: '32px',
-              borderRadius: '20px',
-              background: 'rgba(255,255,255,0.55)',
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(134,117,153,0.2)',
-              boxShadow: '0 4px 24px rgba(134,117,153,0.08), inset 0 1px 0 rgba(255,255,255,0.8)',
-            }}
+            style={{ ...glassCard, position: 'relative', height: '100%' }}
           >
             {/* Left border accent */}
             <div style={{
               position: 'absolute', left: 0, top: '20%', bottom: '20%',
               width: '3px', borderRadius: '0 3px 3px 0',
               background: 'linear-gradient(to bottom, #867599, #679F9E)',
-              opacity: 0.5,
+              opacity: 0.45,
             }} />
 
-            <h3 className="text-2xl font-light mb-3" style={{ color: '#2C4A4A' }}>
-              Let's Connect
-            </h3>
+            <h3 className="text-2xl font-light mb-3" style={{ color: '#2C4A4A' }}>Let's Connect</h3>
             <p className="leading-relaxed mb-8" style={{ color: '#6F8F8E', fontSize: '15px' }}>
               I'm always open to discussing new opportunities, innovative projects, and creative ideas.
             </p>
 
-            {/* Divider */}
-            <div style={{
-              height: '1px', marginBottom: '28px',
-              background: 'linear-gradient(to right, #86759933, transparent)',
-            }} />
+            <div style={{ height: '1px', marginBottom: '28px', background: 'linear-gradient(to right, #86759933, transparent)' }} />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {[
-                {
-                  icon: FaEnvelope,
-                  label: 'Email',
-                  value: 'sallywanga2016@gmail.com',
-                  href: 'mailto:sallywanga2016@gmail.com',
-                  color: '#679F9E',
-                },
-                {
-                  icon: FaPhone,
-                  label: 'Phone',
-                  value: '+254 707 720 597',
-                  href: 'tel:+254707720597',
-                  color: '#7DADDB',
-                },
-                {
-                  icon: FaMapMarkerAlt,
-                  label: 'Location',
-                  value: 'Nairobi, Kenya',
-                  href: undefined,
-                  color: '#E18298',
-                },
+                { icon: FaEnvelope, label: 'Email', value: 'sallywanga2016@gmail.com', href: 'mailto:sallywanga2016@gmail.com', color: '#679F9E' },
+                { icon: FaPhone, label: 'Phone', value: '+254 707 720 597', href: 'tel:+254707720597', color: '#7DADDB' },
+                { icon: FaMapMarkerAlt, label: 'Location', value: 'Nairobi, Kenya', href: undefined, color: '#E18298' },
               ].map(({ icon: Icon, label, value, href, color }) => {
                 const inner = (
                   <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                     <div style={{
                       width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: `${color}18`,
-                      border: `1px solid ${color}33`,
-                      transition: 'all 0.2s',
+                      background: `${color}18`, border: `1px solid ${color}33`, transition: 'all 0.2s',
                     }}>
                       <Icon style={{ color, fontSize: '16px' }} />
                     </div>
                     <div>
-                      <div style={{ fontSize: '12px', fontWeight: 600, color: '#867599', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>
-                        {label}
-                      </div>
+                      <div style={{ fontSize: '12px', fontWeight: 600, color: '#867599', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>{label}</div>
                       <div style={{ fontSize: '14px', color: '#4a6a6a', fontWeight: 500 }}>{value}</div>
                     </div>
                   </div>
                 );
                 return href ? (
                   <a key={label} href={href} style={{ textDecoration: 'none', transition: 'opacity 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = '0.75'}
+                    onMouseEnter={e => e.currentTarget.style.opacity = '0.72'}
                     onMouseLeave={e => e.currentTarget.style.opacity = '1'}
                   >{inner}</a>
-                ) : (
-                  <div key={label}>{inner}</div>
-                );
+                ) : <div key={label}>{inner}</div>;
               })}
             </div>
           </motion.div>
 
-          {/* Right — sticky-note form (kept as-is, with minor polish) */}
+          {/* Right — glass form (matches left card) */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
+            style={{ height: '100%' }}
           >
             <form
               onSubmit={handleSubmit}
               style={{
+                ...glassCard,
                 position: 'relative',
-                padding: '32px',
-                background: '#FEF9E8',
-                border: '1px solid #E6D4BE',
-                borderRadius: '4px',
-                boxShadow: '0 10px 28px -5px rgba(0,0,0,0.12), 0 4px 8px -2px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,240,0.7)',
-                transform: 'rotate(0.3deg)',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                height: '100%',
+                transition: 'box-shadow 0.2s ease',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.transform = 'rotate(0deg) scale(1.01)';
-                e.currentTarget.style.boxShadow = '0 18px 36px -8px rgba(0,0,0,0.18), 0 6px 12px -4px rgba(0,0,0,0.07)';
+                e.currentTarget.style.boxShadow = '0 12px 36px rgba(103,159,158,0.13), inset 0 1px 0 rgba(255,255,255,0.9)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.transform = 'rotate(0.3deg)';
-                e.currentTarget.style.boxShadow = '0 10px 28px -5px rgba(0,0,0,0.12), 0 4px 8px -2px rgba(0,0,0,0.05)';
+                e.currentTarget.style.boxShadow = '0 4px 24px rgba(134,117,153,0.07), inset 0 1px 0 rgba(255,255,255,0.85)';
               }}
             >
-              {/* Folded corner */}
+              {/* Top accent line — mirrors left card's gradient border */}
               <div aria-hidden style={{
-                position: 'absolute', top: 0, right: 0, width: 0, height: 0,
-                borderStyle: 'solid', borderWidth: '0 48px 48px 0',
-                borderColor: 'transparent #E6D4BE transparent transparent',
-                filter: 'drop-shadow(-2px 2px 2px rgba(0,0,0,0.03))',
-                pointerEvents: 'none',
-              }} />
-              <div aria-hidden style={{
-                position: 'absolute', top: '6px', right: '6px', width: 0, height: 0,
-                borderStyle: 'solid', borderWidth: '0 36px 36px 0',
-                borderColor: 'transparent #FEF9E8 transparent transparent',
+                position: 'absolute', top: 0, left: '32px', right: '32px', height: '2px',
+                borderRadius: '0 0 2px 2px',
+                background: 'linear-gradient(to right, transparent, #679F9E55, #E1829844, transparent)',
                 pointerEvents: 'none',
               }} />
 
-              {/* Tape accent */}
-              <div aria-hidden style={{
-                position: 'absolute', top: '-12px', left: '50%',
-                transform: 'translateX(-50%)',
-                width: '80px', height: '22px',
-                background: 'rgba(230,212,190,0.75)',
-                borderRadius: '12px',
-                filter: 'blur(1px)',
-                opacity: 0.65,
-                pointerEvents: 'none',
-              }} />
+              {/* Three dots top-right — decorative */}
+              <div aria-hidden style={{ position: 'absolute', top: '20px', right: '24px', display: 'flex', gap: '5px', pointerEvents: 'none' }}>
+                {['#E18298', '#679F9E', '#867599'].map((c, i) => (
+                  <div key={i} style={{ width: '7px', height: '7px', borderRadius: '50%', background: c, opacity: 0.4 }} />
+                ))}
+              </div>
 
-              {/* Ruled lines */}
-              {[0, 1, 2, 3, 4, 5, 6].map(i => (
-                <div key={i} aria-hidden style={{
-                  position: 'absolute',
-                  left: '32px', right: '32px',
-                  top: `${88 + i * 36}px`,
-                  height: '1px',
-                  background: '#E6D4BE55',
-                  pointerEvents: 'none',
-                }} />
-              ))}
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', position: 'relative', zIndex: 1 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', position: 'relative', zIndex: 1, paddingTop: '8px' }}>
                 {[
                   { id: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
                   { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' },
@@ -333,32 +293,13 @@ const Contact = () => {
                       {label}
                     </label>
                     <input
-                      type={type}
-                      id={id}
-                      name={id}
+                      type={type} id={id} name={id}
                       value={formData[id as keyof typeof formData]}
                       onChange={handleChange}
-                      required
-                      placeholder={placeholder}
-                      style={{
-                        width: '100%', padding: '10px 14px',
-                        borderRadius: '8px',
-                        background: '#FFFEF7',
-                        border: '1px solid #E6D4BE',
-                        color: '#2C4A4A',
-                        fontSize: '14px',
-                        outline: 'none',
-                        transition: 'all 0.2s',
-                        boxSizing: 'border-box',
-                      }}
-                      onFocus={e => {
-                        e.target.style.borderColor = '#679F9E';
-                        e.target.style.boxShadow = '0 0 0 3px rgba(103,159,158,0.15)';
-                      }}
-                      onBlur={e => {
-                        e.target.style.borderColor = '#E6D4BE';
-                        e.target.style.boxShadow = 'none';
-                      }}
+                      required placeholder={placeholder}
+                      style={inputStyle}
+                      onFocus={e => { e.target.style.borderColor = '#679F9E88'; e.target.style.boxShadow = '0 0 0 3px rgba(103,159,158,0.12)'; e.target.style.background = 'rgba(255,255,255,0.85)'; }}
+                      onBlur={e => { e.target.style.borderColor = 'rgba(134,117,153,0.2)'; e.target.style.boxShadow = 'none'; e.target.style.background = 'rgba(255,255,255,0.6)'; }}
                     />
                   </div>
                 ))}
@@ -368,35 +309,19 @@ const Contact = () => {
                     Message
                   </label>
                   <textarea
-                    id="message"
-                    name="message"
+                    id="message" name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    required
-                    rows={4}
+                    required rows={4}
                     placeholder="Tell me about your project..."
-                    style={{
-                      width: '100%', padding: '10px 14px',
-                      borderRadius: '8px',
-                      background: '#FFFEF7',
-                      border: '1px solid #E6D4BE',
-                      color: '#2C4A4A',
-                      fontSize: '14px',
-                      outline: 'none',
-                      resize: 'none',
-                      transition: 'all 0.2s',
-                      boxSizing: 'border-box',
-                    }}
-                    onFocus={e => {
-                      e.target.style.borderColor = '#679F9E';
-                      e.target.style.boxShadow = '0 0 0 3px rgba(103,159,158,0.15)';
-                    }}
-                    onBlur={e => {
-                      e.target.style.borderColor = '#E6D4BE';
-                      e.target.style.boxShadow = 'none';
-                    }}
+                    style={{ ...inputStyle, resize: 'none' }}
+                    onFocus={e => { e.target.style.borderColor = '#679F9E88'; e.target.style.boxShadow = '0 0 0 3px rgba(103,159,158,0.12)'; e.target.style.background = 'rgba(255,255,255,0.85)'; }}
+                    onBlur={e => { e.target.style.borderColor = 'rgba(134,117,153,0.2)'; e.target.style.boxShadow = 'none'; e.target.style.background = 'rgba(255,255,255,0.6)'; }}
                   />
                 </div>
+
+                {/* Hairline divider before button */}
+                <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, #86759933, transparent)' }} />
 
                 <motion.button
                   type="submit"
@@ -404,25 +329,17 @@ const Contact = () => {
                   whileTap={{ scale: 0.98 }}
                   style={{
                     width: '100%', padding: '12px 24px',
-                    borderRadius: '8px',
+                    borderRadius: '10px',
                     background: 'linear-gradient(135deg, #E18298, #c96e85)',
                     border: 'none',
-                    color: '#fff',
-                    fontSize: '15px', fontWeight: 500,
+                    color: '#fff', fontSize: '15px', fontWeight: 500,
                     cursor: 'pointer',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                    boxShadow: '0 4px 14px rgba(225,130,152,0.35)',
+                    boxShadow: '0 4px 14px rgba(225,130,152,0.3)',
                     transition: 'all 0.2s',
-                    marginTop: '4px',
                   }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.boxShadow = '0 6px 20px rgba(225,130,152,0.45)';
-                    e.currentTarget.style.background = 'linear-gradient(135deg, #d9758a, #bf5e78)';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.boxShadow = '0 4px 14px rgba(225,130,152,0.35)';
-                    e.currentTarget.style.background = 'linear-gradient(135deg, #E18298, #c96e85)';
-                  }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(225,130,152,0.42)'; e.currentTarget.style.background = 'linear-gradient(135deg, #d9758a, #bf5e78)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 4px 14px rgba(225,130,152,0.3)'; e.currentTarget.style.background = 'linear-gradient(135deg, #E18298, #c96e85)'; }}
                 >
                   <FaPaperPlane style={{ fontSize: '13px' }} />
                   Send Message
