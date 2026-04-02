@@ -15,7 +15,8 @@ const featuredProjects = [
     demoVideo: "https://www.loom.com/share/60a1a812655a4bbdaf563a3087c2d0d6",
     codeLink: "https://github.com/Mugishaa77/discover-golf",
     liveLink: "https://discovergolf.net/",
-    role: "FullStack"
+    role: "FullStack",
+    accent: '#679F9E',
   },
   {
     title: "Nairobi Verified",
@@ -25,7 +26,8 @@ const featuredProjects = [
     demoVideo: "https://www.loom.com/share/3408e48b28d04c1cb5a49ed7a7a3f017",
     codeLink: "https://github.com/Sikos-Marketing-Developer-Team",
     liveLink: "https://nairobiverified.co.ke/",
-    role: "FullStack"
+    role: "FullStack",
+    accent: '#7DADDB',
   },
   {
     title: "Task Management Platform",
@@ -35,7 +37,8 @@ const featuredProjects = [
     demoVideo: "https://www.loom.com/share/ccea7350b9ab46129bebdbb19b897dde?sid=73e43d52-004d-437c-aca8-7eee19a5219d",
     codeLink: "https://github.com/Mugishaa77/task-manager",
     liveLink: "https://task-manager-swart-two.vercel.app/",
-    role: "FullStack"
+    role: "FullStack",
+    accent: '#E18298',
   },
   {
     title: "React Native Mobile App",
@@ -44,7 +47,8 @@ const featuredProjects = [
     image: nexus,
     demoVideo: "https://www.loom.com/share/7bdb073e614a4301ae46d6e40ec9cf1f?sid=005c2509-7072-43e0-934e-13bc02b79e42",
     codeLink: "https://github.com/Mugishaa77/alx-project-nexus",
-    role: "FullStack"
+    role: "FullStack",
+    accent: '#867599',
   },
 ];
 
@@ -57,6 +61,7 @@ interface Project {
   codeLink?: string;
   demoVideo?: string;
   role?: string;
+  accent?: string;
 }
 
 const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[]; isFeatured?: boolean }) => {
@@ -97,16 +102,14 @@ const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[];
   };
 
   const getCardWidth = () => isMobile ? 280 : (isFeatured ? 330 : 320);
-  const getImageHeight = () => isMobile ? 140 : (isFeatured ? 165 : 160);
-  const getCardPadding = () => isMobile ? '0.75rem' : (isFeatured ? '1.25rem' : '1rem');
+  const getCardPadding = () => isMobile ? '0.85rem' : (isFeatured ? '1.25rem' : '1rem');
 
   const cardWidth = getCardWidth();
-  const imageHeight = getImageHeight();
   const cardPadding = getCardPadding();
 
   return (
     <div className="relative max-w-6xl mx-auto">
-      {/* Nav arrows */}
+      {/* Left arrow */}
       <button
         onClick={() => scroll(-1)}
         style={{
@@ -114,7 +117,7 @@ const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[];
           transform: 'translateY(-50%)',
           width: isMobile ? '40px' : '48px', height: isMobile ? '40px' : '48px',
           borderRadius: '50%',
-          background: 'rgba(255,255,255,0.15)',
+          background: 'rgba(255,255,255,0.08)',
           backdropFilter: 'blur(8px)',
           border: '1px solid rgba(134,117,153,0.3)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -125,11 +128,12 @@ const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[];
         }}
         aria-label="Scroll left"
         onMouseEnter={e => (e.currentTarget.style.background = 'rgba(103,159,158,0.25)')}
-        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.15)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
       >
         <FaChevronLeft style={{ fontSize: isMobile ? '14px' : '16px' }} />
       </button>
 
+      {/* Right arrow */}
       <button
         onClick={() => scroll(1)}
         style={{
@@ -137,7 +141,7 @@ const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[];
           transform: 'translateY(-50%)',
           width: isMobile ? '40px' : '48px', height: isMobile ? '40px' : '48px',
           borderRadius: '50%',
-          background: 'rgba(255,255,255,0.15)',
+          background: 'rgba(255,255,255,0.08)',
           backdropFilter: 'blur(8px)',
           border: '1px solid rgba(134,117,153,0.3)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -148,12 +152,12 @@ const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[];
         }}
         aria-label="Scroll right"
         onMouseEnter={e => (e.currentTarget.style.background = 'rgba(103,159,158,0.25)')}
-        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.15)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
       >
         <FaChevronRight style={{ fontSize: isMobile ? '14px' : '16px' }} />
       </button>
 
-      {/* Scrollable row */}
+      {/* Scroll container */}
       <div
         ref={scrollContainerRef}
         style={{
@@ -161,123 +165,177 @@ const ProjectCarousel = ({ projects, isFeatured = true }: { projects: Project[];
           gap: isMobile ? '20px' : '24px',
           overflowX: 'auto',
           scrollBehavior: 'smooth',
-          paddingTop: '16px',
-          paddingBottom: '16px',
-          paddingLeft: '8px',
-          paddingRight: '8px',
+          padding: '16px 8px',
           scrollbarWidth: 'none',
         }}
         onScroll={checkScrollPosition}
       >
-        {projects.map((project, index) => (
-          <motion.div
-            key={project.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            style={{
-              background: '#FFFFFF',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              width: `${cardWidth}px`,
-              flexShrink: 0,
-              transition: 'all 0.3s ease',
-              border: '1px solid #f0f0f0',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.02)',
-              /* Added outer margin so cards don't touch each other */
-              marginTop: '4px',
-              marginBottom: '4px',
-            }}
-            whileHover={{ scale: isMobile ? 1 : 1.02, boxShadow: '0 12px 32px rgba(103,159,158,0.15)' }}
-          >
-            <div style={{ height: `${imageHeight}px`, position: 'relative', overflow: 'hidden', background: '#faf9f8' }}>
-              <img
-                src={project.image}
-                alt={project.title}
-                style={{ width: '100%', height: '100%', objectFit: 'contain', padding: isMobile ? '6px' : '8px' }}
-              />
-            </div>
-
-            <div style={{ padding: cardPadding }}>
+        {projects.map((project, index) => {
+          const accent = project.accent || '#679F9E';
+          return (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              style={{
+                borderRadius: '18px',
+                overflow: 'hidden',
+                width: `${cardWidth}px`,
+                flexShrink: 0,
+                marginTop: '4px',
+                marginBottom: '4px',
+                background: 'linear-gradient(160deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)',
+                backdropFilter: 'blur(12px)',
+                border: `1px solid ${accent}35`,
+                boxShadow: `0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06)`,
+                transition: 'all 0.3s ease',
+              }}
+              whileHover={{
+                scale: isMobile ? 1 : 1.02,
+                boxShadow: `0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px ${accent}55, inset 0 1px 0 rgba(255,255,255,0.08)`,
+              }}
+            >
+              {/* Image area – natural aspect ratio preserved */}
               <div style={{
-                display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
-                marginBottom: '0.75rem',
-                flexDirection: isMobile ? 'column' : 'row',
-                gap: isMobile ? '0.5rem' : '0',
+                position: 'relative',
+                overflow: 'hidden',
+                background: `linear-gradient(135deg, #1c2b3a 0%, #111c27 100%)`,
+                borderBottom: `1px solid ${accent}22`,
               }}>
-                <h3 style={{
-                  fontSize: isMobile ? '1.1rem' : (isFeatured ? '1.2rem' : '1.125rem'),
-                  fontWeight: '600', color: '#1f2937', margin: 0, lineHeight: '1.3',
+                {/* Per-card accent glow */}
+                <div aria-hidden style={{
+                  position: 'absolute', inset: 0,
+                  background: `radial-gradient(ellipse at 50% 100%, ${accent}20 0%, transparent 70%)`,
+                  pointerEvents: 'none',
+                }} />
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: isMobile ? '160px' : '190px',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    padding: isMobile ? '16px' : '20px',
+                    position: 'relative',
+                    zIndex: 1,
+                  }}
+                />
+                {/* Bottom fade */}
+                <div aria-hidden style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0, height: '36px',
+                  background: 'linear-gradient(to bottom, transparent, rgba(12,20,30,0.5))',
+                  pointerEvents: 'none', zIndex: 2,
+                }} />
+              </div>
+
+              {/* Card body */}
+              <div style={{ padding: cardPadding }}>
+                {/* Title + role */}
+                <div style={{
+                  display: 'flex', alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: '0.6rem',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  gap: isMobile ? '0.5rem' : '0.5rem',
                 }}>
-                  {project.title}
-                </h3>
-                {project.role && (
-                  <span style={{
-                    background: '#679F9F', padding: '0.25rem 0.5rem',
-                    borderRadius: '9999px',
-                    fontSize: isMobile ? '0.7rem' : '0.75rem',
-                    color: 'white', alignSelf: isMobile ? 'flex-start' : 'center',
+                  <h3 style={{
+                    fontSize: isMobile ? '1.05rem' : (isFeatured ? '1.15rem' : '1.1rem'),
+                    fontWeight: 600, color: '#E6D4BE',
+                    margin: 0, lineHeight: 1.3,
                   }}>
-                    {project.role}
-                  </span>
-                )}
-              </div>
+                    {project.title}
+                  </h3>
+                  {project.role && (
+                    <span style={{
+                      background: `${accent}20`,
+                      border: `1px solid ${accent}44`,
+                      padding: '0.2rem 0.55rem',
+                      borderRadius: '9999px',
+                      fontSize: isMobile ? '0.65rem' : '0.7rem',
+                      color: accent,
+                      alignSelf: isMobile ? 'flex-start' : 'center',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                    }}>
+                      {project.role}
+                    </span>
+                  )}
+                </div>
 
-              <p style={{
-                color: '#6b7280', marginBottom: '1rem', lineHeight: '1.5',
-                fontSize: isMobile ? '0.8rem' : (isFeatured ? '0.95rem' : '0.875rem'),
-                display: '-webkit-box', WebkitLineClamp: 3,
-                WebkitBoxOrient: 'vertical', overflow: 'hidden',
-              }}>
-                {project.description}
-              </p>
+                {/* Description */}
+                <p style={{
+                  color: '#E6D4BE77',
+                  marginBottom: '0.875rem',
+                  lineHeight: 1.55,
+                  fontSize: isMobile ? '0.8rem' : (isFeatured ? '0.875rem' : '0.85rem'),
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}>
+                  {project.description}
+                </p>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: isMobile ? '1rem' : '1.5rem' }}>
-                {project.tech.map(tech => (
-                  <span key={tech} style={{
-                    background: '#f3f4f6',
-                    padding: isMobile ? '0.2rem 0.4rem' : (isFeatured ? '0.3rem 0.6rem' : '0.25rem 0.5rem'),
-                    borderRadius: '9999px',
-                    fontSize: isMobile ? '0.7rem' : (isFeatured ? '0.8rem' : '0.75rem'),
-                    color: '#4b5563',
-                  }}>
-                    {tech}
-                  </span>
-                ))}
-              </div>
+                {/* Tech tags */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: isMobile ? '0.875rem' : '1.1rem' }}>
+                  {project.tech.map(tech => (
+                    <span key={tech} style={{
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid rgba(255,255,255,0.10)',
+                      padding: isMobile ? '0.15rem 0.4rem' : '0.25rem 0.55rem',
+                      borderRadius: '9999px',
+                      fontSize: isMobile ? '0.68rem' : '0.75rem',
+                      color: '#E6D4BEaa',
+                    }}>
+                      {tech}
+                    </span>
+                  ))}
+                </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', gap: isMobile ? '0.75rem' : (isFeatured ? '1.25rem' : '1rem'), flexWrap: isMobile ? 'wrap' : 'nowrap' }}>
+                {/* Accent hairline */}
+                <div style={{
+                  height: '1px', marginBottom: isMobile ? '0.75rem' : '0.9rem',
+                  background: `linear-gradient(to right, ${accent}44, transparent)`,
+                }} />
+
+                {/* Links */}
+                <div style={{ display: 'flex', gap: isMobile ? '0.75rem' : '1.1rem', flexWrap: isMobile ? 'wrap' : 'nowrap', alignItems: 'center' }}>
                   {project.liveLink && (
                     <a href={project.liveLink} target="_blank" rel="noopener noreferrer"
-                      style={{ display: 'flex', alignItems: 'center', color: '#679F9F', textDecoration: 'none', transition: 'color 0.2s', fontSize: isMobile ? '0.8rem' : (isFeatured ? '0.95rem' : '0.875rem') }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#877499'}
-                      onMouseLeave={e => e.currentTarget.style.color = '#679F9F'}>
-                      <FaExternalLinkAlt style={{ marginRight: '0.5rem' }} /><span>Live</span>
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px', color: accent, textDecoration: 'none', transition: 'opacity 0.2s', fontSize: isMobile ? '0.78rem' : '0.875rem' }}
+                      onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
+                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                      <FaExternalLinkAlt style={{ fontSize: '10px' }} /><span>Live</span>
                     </a>
                   )}
                   {project.demoVideo && (
                     <a href={project.demoVideo} target="_blank" rel="noopener noreferrer"
-                      style={{ display: 'flex', alignItems: 'center', color: '#679F9F', textDecoration: 'none', transition: 'color 0.2s', fontSize: isMobile ? '0.8rem' : (isFeatured ? '0.95rem' : '0.875rem') }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#877499'}
-                      onMouseLeave={e => e.currentTarget.style.color = '#679F9F'}>
-                      <FaVideo style={{ marginRight: '0.5rem' }} /><span>Demo</span>
+                      style={{ display: 'flex', alignItems: 'center', gap: '5px', color: accent, textDecoration: 'none', transition: 'opacity 0.2s', fontSize: isMobile ? '0.78rem' : '0.875rem' }}
+                      onMouseEnter={e => e.currentTarget.style.opacity = '0.65'}
+                      onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                      <FaVideo style={{ fontSize: '11px' }} /><span>Demo</span>
                     </a>
                   )}
                   <a href={project.codeLink} target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s', fontSize: isMobile ? '0.8rem' : (isFeatured ? '0.95rem' : '0.875rem') }}
-                    onMouseEnter={e => e.currentTarget.style.color = '#4b5563'}
-                    onMouseLeave={e => e.currentTarget.style.color = '#9ca3af'}>
-                    <FaGithub style={{ marginRight: '0.5rem' }} /><span>Code</span>
+                    style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#E6D4BE44', textDecoration: 'none', transition: 'color 0.2s', fontSize: isMobile ? '0.78rem' : '0.875rem' }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#E6D4BEcc'}
+                    onMouseLeave={e => e.currentTarget.style.color = '#E6D4BE44'}>
+                    <FaGithub style={{ fontSize: '13px' }} /><span>Code</span>
                   </a>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </div>
 
-      {isMobile && <p style={{ textAlign: 'center', color: '#E6D4BE88', fontSize: '14px', marginTop: '16px' }}>← Scroll or swipe →</p>}
+      {isMobile && (
+        <p style={{ textAlign: 'center', color: '#E6D4BE33', fontSize: '13px', marginTop: '12px' }}>← Scroll or swipe →</p>
+      )}
     </div>
   );
 };
@@ -319,15 +377,11 @@ const Projects = () => {
         background: 'radial-gradient(circle, #679F9E14 0%, transparent 70%)',
         filter: 'blur(35px)', pointerEvents: 'none',
       }} />
-
-      {/* Noise/grain overlay */}
       <div aria-hidden style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         backgroundImage: 'radial-gradient(circle, #ffffff06 1px, transparent 1px)',
         backgroundSize: '32px 32px',
       }} />
-
-      {/* Diagonal stripe accent */}
       <div aria-hidden style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '3px',
         background: 'linear-gradient(90deg, transparent, #867599, #679F9E, #7DADDB, transparent)',
@@ -369,12 +423,10 @@ const Projects = () => {
           transition={{ delay: 0.2 }}
           style={{ marginTop: '80px' }}
         >
-          {/* Divider */}
           <div style={{
             height: '1px', maxWidth: '400px', margin: '0 auto 40px',
             background: 'linear-gradient(to right, transparent, #86759955, transparent)',
           }} />
-
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '12px' }}>
             <FaWordpress style={{ color: '#7DADDB', fontSize: '20px' }} />
             <h3 style={{ fontSize: '18px', fontWeight: 500, color: '#E6D4BE' }}>WordPress & CMS</h3>
@@ -382,7 +434,6 @@ const Projects = () => {
           <p style={{ color: '#E6D4BE55', fontSize: '14px', maxWidth: '420px', margin: '0 auto 32px' }}>
             Client work under NDA – here's a glimpse of the solutions delivered.
           </p>
-
           <div style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
