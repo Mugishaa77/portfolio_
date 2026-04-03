@@ -19,7 +19,7 @@ const skills = [
   { icon: SiLinux, name: 'Linux', category: 'devops' },
   { icon: FaKey, name: 'JWT Auth', category: 'devops' },
   { icon: FaDatabase, name: 'MySQL', category: 'devops' },
-  { icon: FaUsers, name: 'Agile', category: 'devops' },
+  { icon: FaUsers, name: 'Atlassian', category: 'devops' },
 ];
 
 const categoryMeta = {

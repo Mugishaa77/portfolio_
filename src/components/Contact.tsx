@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane, FaCheckCircle, FaTimesCircle, FaExternalLinkAlt } from 'react-icons/fa';
 
 /* ─── Prismatic star canvas (same engine as Hero) ─────────────────────── */
 const CrystalStarField = () => {
@@ -406,6 +406,15 @@ const Contact = () => {
             </form>
           </motion.div>
         </div>
+      </div>
+      <div style={{ position:'absolute', bottom:'12px', left:0, right:0, textAlign:'center', fontSize:'14px', color:'rgba(120,100,180,0.6)' }}>
+        <a href="https://github.com/Mugishaa77/portfolio_" target="_blank" rel="noopener noreferrer" style={{ marginLeft:'8px', color:'rgba(120,100,180,0.6)', textDecoration:'underline', display:'inline-flex', alignItems:'center', gap:'6px' }}
+          onMouseEnter={e => e.currentTarget.style.color='rgba(120,100,180,0.9)'}
+          onMouseLeave={e => e.currentTarget.style.color='rgba(120,100,180,0.6)'}
+        >
+          <span>Open-Source</span>
+          <FaExternalLinkAlt style={{ fontSize:'10px' }} />
+        </a>
       </div>
     </section>
   );
