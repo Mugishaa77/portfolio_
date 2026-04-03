@@ -1,165 +1,239 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaPaperPlane, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
+/* ─── Prismatic star canvas (same engine as Hero) ─────────────────────── */
+const CrystalStarField = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = canvasRef.current; if (!canvas) return;
+    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    resize(); window.addEventListener('resize', resize);
+    type Star = { x:number; y:number; r:number; phase:number; speed:number; hue:number };
+    const stars: Star[] = Array.from({ length: 100 }, () => ({
+      x: Math.random() * (canvas.width  || 1200),
+      y: Math.random() * (canvas.height || 700),
+      r: Math.random() * 1.4 + 0.3,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.006 + 0.002,
+      hue: Math.random() * 60 + 180,
+    }));
+    let raf: number, t = 0;
+    const draw = () => {
+      const ctx = canvas.getContext('2d'); if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      t += 0.012;
+      stars.forEach(s => {
+        const tw = 0.2 + 0.8 * Math.abs(Math.sin(t * s.speed * 50 + s.phase));
+        const dynHue = (s.hue + t * 18) % 360;
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${dynHue},50%,80%,${tw * 0.45})`; ctx.fill();
+        if (s.r > 1.1) {
+          const len = s.r * 4.5 * tw;
+          ctx.strokeStyle = `hsla(${dynHue},55%,85%,${tw * 0.3})`;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath();
+          ctx.moveTo(s.x-len,s.y); ctx.lineTo(s.x+len,s.y);
+          ctx.moveTo(s.x,s.y-len); ctx.lineTo(s.x,s.y+len);
+          const d = len * 0.55;
+          ctx.moveTo(s.x-d,s.y-d); ctx.lineTo(s.x+d,s.y+d);
+          ctx.moveTo(s.x+d,s.y-d); ctx.lineTo(s.x-d,s.y+d);
+          ctx.stroke();
+        }
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
+  }, []);
+  return <canvas ref={canvasRef} aria-hidden style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', zIndex:0, opacity:0.65 }} />;
+};
+
+/* ─── Liquid glass lens ─────────────────────────────────────────────────── */
+const GlassLens = ({ top, left, w, h, rotate, delay }: { top:string; left:string; w:number; h:number; rotate:number; delay:number }) => (
+  <motion.div aria-hidden
+    initial={{ opacity:0, scale:0.8 }}
+    animate={{ opacity:[0.15,0.38,0.15], scale:[0.96,1.04,0.96], rotate:[rotate, rotate+3, rotate] }}
+    transition={{ duration:10+delay, delay, repeat:Infinity, ease:'easeInOut' }}
+    style={{
+      position:'absolute', top, left, width:w, height:h, borderRadius:'50%',
+      background:`
+        radial-gradient(ellipse at 30% 28%, rgba(255,255,255,0.7) 0%, transparent 35%),
+        radial-gradient(ellipse at 70% 20%, rgba(180,220,255,0.32) 0%, transparent 40%),
+        radial-gradient(ellipse at 20% 72%, rgba(210,180,255,0.25) 0%, transparent 42%),
+        radial-gradient(ellipse at 78% 76%, rgba(255,200,220,0.2) 0%, transparent 38%),
+        conic-gradient(from ${rotate}deg at 50% 50%,
+          rgba(255,255,255,0.05) 0deg, rgba(180,220,255,0.1) 60deg,
+          rgba(210,180,255,0.09) 120deg, rgba(255,220,200,0.07) 180deg,
+          rgba(200,255,220,0.06) 240deg, rgba(255,255,255,0.05) 300deg,
+          rgba(255,255,255,0.05) 360deg)
+      `,
+      backdropFilter:'blur(10px) saturate(190%) brightness(1.1)',
+      WebkitBackdropFilter:'blur(10px) saturate(190%) brightness(1.1)',
+      border:'1px solid rgba(255,255,255,0.52)',
+      boxShadow:`inset 0 1px 3px rgba(255,255,255,0.88), inset -5px -5px 18px rgba(180,200,255,0.18), inset 5px 5px 18px rgba(255,200,220,0.13), 0 14px 44px rgba(150,150,200,0.1)`,
+      pointerEvents:'none', zIndex:1,
+    }}
+  />
+);
+
+/* ─── Prismatic streak ──────────────────────────────────────────────────── */
+const PrismStreak = ({ top, delay, duration, color }: { top:string; delay:number; duration:number; color:string }) => (
+  <motion.div aria-hidden
+    initial={{ x:'-8%', opacity:0 }}
+    animate={{ x:'108%', y:'12%', opacity:[0,0.65,0.65,0] }}
+    transition={{ duration, delay, repeat:Infinity, repeatDelay:12+delay, ease:'easeIn' }}
+    style={{
+      position:'absolute', top, left:0, zIndex:3,
+      width:'120px', height:'1.5px', pointerEvents:'none',
+      background:`linear-gradient(to right, transparent, ${color}, transparent)`,
+      borderRadius:'2px', filter:'blur(0.6px)',
+      boxShadow:`0 0 8px ${color}`,
+    }}
+  />
+);
+
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [status, setStatus] = useState<'success' | 'error' | null>(null);
+  const [formData, setFormData] = useState({ name:'', email:'', message:'' });
+  const [status, setStatus] = useState<'success'|'error'|null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('https://formspree.io/f/xvgwdokn', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+      const res = await fetch('https://formspree.io/f/xvgwdokn', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(formData),
       });
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        setStatus('error');
-      }
-    } catch {
-      setStatus('error');
-    }
+      setStatus(res.ok ? 'success' : 'error');
+      if (res.ok) setFormData({ name:'', email:'', message:'' });
+    } catch { setStatus('error'); }
     setTimeout(() => setStatus(null), 4000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  // Crystal glass card — matches Hero's crystal() helper
+  const crystalCard: React.CSSProperties = {
+    padding:'32px', borderRadius:'20px',
+    background:`linear-gradient(135deg, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.22) 40%, rgba(200,210,255,0.14) 100%)`,
+    backdropFilter:'blur(22px) saturate(220%) brightness(1.06)',
+    WebkitBackdropFilter:'blur(22px) saturate(220%) brightness(1.06)',
+    border:'1px solid rgba(255,255,255,0.55)',
+    boxShadow:`inset 0 1px 2px rgba(255,255,255,0.95), inset 0 -1px 1px rgba(200,200,255,0.18), 0 8px 32px rgba(150,150,220,0.09), 0 2px 8px rgba(200,180,255,0.07)`,
   };
 
-  // Shared glass card style — both columns match
-  const glassCard: React.CSSProperties = {
-    padding: '32px',
-    borderRadius: '20px',
-    background: 'rgba(255,255,255,0.48)',
-    backdropFilter: 'blur(14px)',
-    WebkitBackdropFilter: 'blur(14px)',
-    border: '1px solid rgba(134,117,153,0.18)',
-    boxShadow: '0 4px 24px rgba(134,117,153,0.07), inset 0 1px 0 rgba(255,255,255,0.85)',
-  };
-
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    padding: '10px 14px',
-    borderRadius: '10px',
-    background: 'rgba(255,255,255,0.6)',
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)',
-    border: '1px solid rgba(134,117,153,0.2)',
-    color: '#2C4A4A',
-    fontSize: '14px',
-    outline: 'none',
-    transition: 'all 0.2s',
-    boxSizing: 'border-box' as const,
+  const crystalInput: React.CSSProperties = {
+    width:'100%', padding:'11px 15px', borderRadius:'10px',
+    background:'rgba(255,255,255,0.35)',
+    backdropFilter:'blur(12px) saturate(180%)',
+    WebkitBackdropFilter:'blur(12px) saturate(180%)',
+    border:'1px solid rgba(255,255,255,0.5)',
+    boxShadow:'inset 0 1px 2px rgba(255,255,255,0.9)',
+    color:'rgba(20,15,50,0.85)', fontSize:'14px',
+    outline:'none', transition:'all 0.2s',
+    boxSizing:'border-box' as const,
   };
 
   return (
-    <section
-      id="contact"
-      className="py-16 md:py-20 px-4 relative overflow-hidden"
+    <section id="contact" className="py-16 md:py-20 px-4 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(155deg, #f7f3ee 0%, #efe7dc 45%, #e8ddd0 100%)',
+        background:`
+          radial-gradient(ellipse at 12% 10%, rgba(210,200,255,0.28) 0%, rgba(180,210,255,0.13) 38%, transparent 62%),
+          radial-gradient(ellipse at 88% 88%, rgba(255,210,230,0.24) 0%, rgba(200,230,255,0.15) 42%, transparent 65%),
+          radial-gradient(ellipse at 55%  3%, rgba(180,230,255,0.18) 0%, transparent 45%),
+          radial-gradient(ellipse at  5% 80%, rgba(255,200,230,0.14) 0%, transparent 50%),
+          linear-gradient(160deg, #f8f6ff 0%, #fafcff 35%, #f6f8ff 65%, #fdf8ff 100%)
+        `,
       }}
     >
-      {/* Radial mesh blobs */}
+      {/* Prismatic star field */}
+      <CrystalStarField />
+
+      {/* Glass lenses */}
+      <GlassLens top="-10%" left="70%"  w={320} h={320} rotate={0}   delay={0}   />
+      <GlassLens top="60%"  left="-6%"  w={240} h={240} rotate={40}  delay={2}   />
+      <GlassLens top="25%"  left="82%"  w={180} h={180} rotate={-15} delay={3.5} />
+
+      {/* Prismatic streaks */}
+      <PrismStreak top="12%" delay={3}   duration={1.6} color="rgba(180,210,255,0.85)" />
+      <PrismStreak top="55%" delay={9}   duration={1.4} color="rgba(220,180,255,0.75)" />
+      <PrismStreak top="78%" delay={15}  duration={1.5} color="rgba(255,200,220,0.65)" />
+
+      {/* Top prismatic hairline */}
       <div aria-hidden style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        background: `
-          radial-gradient(ellipse at 15% 25%, #86759922 0%, transparent 55%),
-          radial-gradient(ellipse at 85% 75%, #679F9E1a 0%, transparent 55%),
-          radial-gradient(ellipse at 55% 90%, #E1829818 0%, transparent 60%),
-          radial-gradient(ellipse at 70% 10%, #7DADDB18 0%, transparent 50%)
-        `,
+        position:'absolute', top:0, left:0, right:0, height:'2px', zIndex:4,
+        background:'linear-gradient(90deg, transparent, rgba(200,180,255,0.75), rgba(180,220,255,0.65), rgba(255,200,220,0.6), transparent)',
+        boxShadow:'0 0 10px rgba(200,180,255,0.25)',
+        opacity:0.85,
       }} />
 
-      {/* Cross-hatch texture */}
+      {/* Frosted base layer */}
       <div aria-hidden style={{
-        position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundImage: `
-          linear-gradient(#86759912 1px, transparent 1px),
-          linear-gradient(90deg, #86759912 1px, transparent 1px)
-        `,
-        backgroundSize: '48px 48px',
-        maskImage: 'radial-gradient(ellipse at 50% 50%, black 35%, transparent 80%)',
+        position:'absolute', inset:0, pointerEvents:'none',
+        backdropFilter:'blur(20px) saturate(150%)',
+        WebkitBackdropFilter:'blur(20px) saturate(150%)',
+        background:'rgba(248,246,255,0.04)',
       }} />
 
-      {/* Top rainbow hairline */}
+      {/* Spectral light diagonal */}
       <div aria-hidden style={{
-        position: 'absolute', top: 0, left: 0, right: 0, height: '3px', zIndex: 1,
-        background: 'linear-gradient(90deg, transparent, #867599, #E18298, #679F9E, transparent)',
-        opacity: 0.45,
+        position:'absolute', inset:0, pointerEvents:'none',
+        background:'linear-gradient(118deg, rgba(200,190,255,0.11) 0%, rgba(180,220,255,0.07) 30%, transparent 58%)',
       }} />
 
-      {/* Ghost circles */}
+      {/* Crystal dot grid */}
       <div aria-hidden style={{
-        position: 'absolute', right: '-100px', top: '50%', transform: 'translateY(-50%)',
-        width: '480px', height: '480px', borderRadius: '50%',
-        border: '1.5px solid #86759918', pointerEvents: 'none', zIndex: 0,
-      }} />
-      <div aria-hidden style={{
-        position: 'absolute', right: '-40px', top: '50%', transform: 'translateY(-50%)',
-        width: '340px', height: '340px', borderRadius: '50%',
-        border: '1.5px solid #679F9E14', pointerEvents: 'none', zIndex: 0,
+        position:'absolute', inset:0, pointerEvents:'none',
+        backgroundImage:'radial-gradient(circle, rgba(160,140,200,0.14) 1px, transparent 1px)',
+        backgroundSize:'26px 26px',
+        maskImage:'radial-gradient(ellipse at 50% 50%, black 30%, transparent 78%)',
+        WebkitMaskImage:'radial-gradient(ellipse at 50% 50%, black 30%, transparent 78%)',
       }} />
 
-      {/* Blurred blobs */}
+      {/* Ghost rings */}
       <div aria-hidden style={{
-        position: 'absolute', top: '8%', right: '-80px',
-        width: '320px', height: '320px', borderRadius: '50%',
-        background: 'radial-gradient(circle, #7DADDB28 0%, transparent 70%)',
-        filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0,
+        position:'absolute', right:'-100px', top:'50%', transform:'translateY(-50%)',
+        width:'500px', height:'500px', borderRadius:'50%',
+        border:'1px solid rgba(200,180,255,0.12)', pointerEvents:'none', zIndex:0,
       }} />
       <div aria-hidden style={{
-        position: 'absolute', bottom: '5%', left: '-80px',
-        width: '380px', height: '380px', borderRadius: '50%',
-        background: 'radial-gradient(circle, #E6D4BE44 0%, transparent 70%)',
-        filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0,
+        position:'absolute', right:'-40px', top:'50%', transform:'translateY(-50%)',
+        width:'350px', height:'350px', borderRadius:'50%',
+        border:'1px solid rgba(180,220,255,0.1)', pointerEvents:'none', zIndex:0,
       }} />
-
-      {/* Wavy bottom */}
-      <div aria-hidden style={{
-        position: 'absolute', bottom: 0, left: 0, width: '100%', height: '100px',
-        pointerEvents: 'none', zIndex: 0,
-      }}>
-        <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg"
-          style={{ width: '100%', height: '100%', opacity: 0.4 }}>
-          <path d="M0,50 C240,80 480,20 720,50 C960,80 1200,20 1440,50 L1440,100 L0,100 Z" fill="url(#waveGrad)" />
-          <defs>
-            <linearGradient id="waveGrad" x1="0" y1="0" x2="1440" y2="0" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#867599" stopOpacity="0.4" />
-              <stop offset="0.5" stopColor="#E18298" stopOpacity="0.3" />
-              <stop offset="1" stopColor="#679F9E" stopOpacity="0.4" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
 
       <div className="max-w-6xl mx-auto relative z-10">
+
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
+        <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} className="text-center mb-12">
           <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: '8px',
-            marginBottom: '14px', padding: '4px 14px',
-            borderRadius: '999px',
-            border: '1px solid #86759944',
-            background: '#86759910',
+            display:'inline-flex', alignItems:'center', gap:'8px',
+            marginBottom:'14px', padding:'5px 16px', borderRadius:'999px',
+            background:'linear-gradient(135deg, rgba(255,255,255,0.35) 0%, rgba(200,210,255,0.2) 100%)',
+            backdropFilter:'blur(16px) saturate(200%)',
+            WebkitBackdropFilter:'blur(16px) saturate(200%)',
+            border:'1px solid rgba(255,255,255,0.58)',
+            boxShadow:'inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 16px rgba(180,160,255,0.1)',
           }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#E18298', display: 'inline-block' }} />
-            <span style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#867599', fontWeight: 500 }}>
+            <motion.span
+              animate={{ scale:[1,1.5,1], opacity:[1,0.35,1] }}
+              transition={{ duration:2.2, repeat:Infinity, ease:'easeInOut' }}
+              style={{
+                width:'7px', height:'7px', borderRadius:'50%', display:'inline-block', flexShrink:0,
+                background:'linear-gradient(135deg, rgba(200,180,255,1), rgba(180,220,255,1))',
+                boxShadow:'0 0 8px rgba(200,180,255,0.9)',
+              }}
+            />
+            <span style={{ fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(110,90,160,0.9)', fontWeight:600 }}>
               Let's Connect
             </span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-light mb-3" style={{ color: '#2C4A4A' }}>
+          <h2 className="text-3xl md:text-4xl font-light mb-3"
+            style={{ color:'#1a1530', textShadow:'0 1px 0 rgba(255,255,255,0.8), 0 -1px 0 rgba(200,180,255,0.12)' }}>
             Get In Touch
           </h2>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#6F8F8E' }}>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color:'rgba(100,80,160,0.7)' }}>
             Let's build something amazing together
           </p>
         </motion.div>
@@ -168,180 +242,164 @@ const Contact = () => {
         <AnimatePresence>
           {status && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity:0, y:-20 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-20 }}
               style={{
-                position: 'fixed', top: '16px', right: '16px', zIndex: 50,
-                padding: '12px 20px', borderRadius: '12px',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
-                display: 'flex', alignItems: 'center', gap: '10px',
-                color: '#fff',
-                background: status === 'success'
-                  ? 'linear-gradient(135deg, #679F9E, #4a8584)'
-                  : 'linear-gradient(135deg, #E18298, #c4607a)',
+                position:'fixed', top:'16px', right:'16px', zIndex:50,
+                padding:'12px 20px', borderRadius:'14px',
+                display:'flex', alignItems:'center', gap:'10px', color:'#fff',
+                background: status==='success'
+                  ? 'linear-gradient(135deg, rgba(160,210,200,0.95), rgba(100,170,160,0.95))'
+                  : 'linear-gradient(135deg, rgba(220,160,180,0.95), rgba(180,100,130,0.95))',
+                backdropFilter:'blur(16px)',
+                border:'1px solid rgba(255,255,255,0.5)',
+                boxShadow:'0 8px 28px rgba(150,120,200,0.2)',
               }}
             >
-              {status === 'success'
-                ? <><FaCheckCircle style={{ fontSize: '18px' }} /><span>Message sent successfully!</span></>
-                : <><FaTimesCircle style={{ fontSize: '18px' }} /><span>Oops! Something went wrong.</span></>
+              {status==='success'
+                ? <><FaCheckCircle style={{ fontSize:'18px' }} /><span>Message sent successfully!</span></>
+                : <><FaTimesCircle style={{ fontSize:'18px' }} /><span>Oops! Something went wrong.</span></>
               }
             </motion.div>
           )}
         </AnimatePresence>
 
-        <div
-          className="grid md:grid-cols-2"
-          style={{ columnGap: '64px', rowGap: '32px', alignItems: 'stretch' }}
-        >
+        <div className="grid md:grid-cols-2" style={{ columnGap:'56px', rowGap:'32px', alignItems:'stretch' }}>
 
-          {/* Left — contact info */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            style={{ ...glassCard, position: 'relative', height: '100%' }}
-          >
-            {/* Left border accent */}
+          {/* Left — contact info crystal card */}
+          <motion.div initial={{ opacity:0, x:-20 }} whileInView={{ opacity:1, x:0 }}
+            style={{ ...crystalCard, position:'relative' }}>
+            {/* Prismatic left border */}
             <div style={{
-              position: 'absolute', left: 0, top: '20%', bottom: '20%',
-              width: '3px', borderRadius: '0 3px 3px 0',
-              background: 'linear-gradient(to bottom, #867599, #679F9E)',
-              opacity: 0.45,
+              position:'absolute', left:0, top:'18%', bottom:'18%',
+              width:'3px', borderRadius:'0 3px 3px 0',
+              background:'linear-gradient(to bottom, transparent, rgba(200,180,255,0.8) 25%, rgba(180,220,255,0.7) 60%, rgba(255,200,220,0.65) 85%, transparent)',
+              boxShadow:'0 0 8px rgba(200,180,255,0.3)',
+              opacity:0.75,
             }} />
 
-            <h3 className="text-2xl font-light mb-3" style={{ color: '#2C4A4A' }}>Let's Connect</h3>
-            <p className="leading-relaxed mb-8" style={{ color: '#6F8F8E', fontSize: '15px' }}>
+            <h3 className="text-2xl font-light mb-3"
+              style={{ color:'#1a1530', textShadow:'0 1px 0 rgba(255,255,255,0.8)' }}>
+              Let's Connect
+            </h3>
+            <p style={{ color:'rgba(80,60,130,0.7)', fontSize:'15px', lineHeight:1.65, marginBottom:'28px' }}>
               I'm always open to discussing new opportunities, innovative projects, and creative ideas.
             </p>
 
-            <div style={{ height: '1px', marginBottom: '28px', background: 'linear-gradient(to right, #86759933, transparent)' }} />
+            {/* Prismatic hairline */}
+            <div style={{
+              height:'1px', marginBottom:'28px',
+              background:'linear-gradient(to right, rgba(200,180,255,0.5), rgba(180,220,255,0.3), transparent)',
+            }} />
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display:'flex', flexDirection:'column', gap:'20px' }}>
               {[
-                { icon: FaEnvelope, label: 'Email', value: 'sallywanga2016@gmail.com', href: 'mailto:sallywanga2016@gmail.com', color: '#679F9E' },
-                { icon: FaPhone, label: 'Phone', value: '+254 707 720 597', href: 'tel:+254707720597', color: '#7DADDB' },
-                { icon: FaMapMarkerAlt, label: 'Location', value: 'Nairobi, Kenya', href: undefined, color: '#E18298' },
-              ].map(({ icon: Icon, label, value, href, color }) => {
+                { icon:FaEnvelope,    label:'Email',    value:'sallywanga2016@gmail.com', href:'mailto:sallywanga2016@gmail.com', hue:'rgba(180,220,255' },
+                { icon:FaPhone,       label:'Phone',    value:'+254 707 720 597',          href:'tel:+254707720597',              hue:'rgba(200,180,255' },
+                { icon:FaMapMarkerAlt,label:'Location', value:'Nairobi, Kenya',            href:undefined,                        hue:'rgba(255,200,220' },
+              ].map(({ icon:Icon, label, value, href, hue }) => {
                 const inner = (
-                  <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
                     <div style={{
-                      width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      background: `${color}18`, border: `1px solid ${color}33`, transition: 'all 0.2s',
+                      width:'44px', height:'44px', borderRadius:'12px', flexShrink:0,
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      background:`${hue},0.12)`,
+                      border:`1px solid ${hue},0.3)`,
+                      boxShadow:`inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 8px ${hue},0.12)`,
+                      backdropFilter:'blur(8px)',
+                      transition:'all 0.2s',
                     }}>
-                      <Icon style={{ color, fontSize: '16px' }} />
+                      <Icon style={{ color:`${hue},0.9)`, fontSize:'16px' }} />
                     </div>
                     <div>
-                      <div style={{ fontSize: '12px', fontWeight: 600, color: '#867599', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: '2px' }}>{label}</div>
-                      <div style={{ fontSize: '14px', color: '#4a6a6a', fontWeight: 500 }}>{value}</div>
+                      <div style={{ fontSize:'11px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(140,120,190,0.8)', marginBottom:'3px' }}>{label}</div>
+                      <div style={{ fontSize:'14px', color:'rgba(30,20,60,0.75)', fontWeight:500 }}>{value}</div>
                     </div>
                   </div>
                 );
-                return href ? (
-                  <a key={label} href={href} style={{ textDecoration: 'none', transition: 'opacity 0.2s' }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = '0.72'}
-                    onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-                  >{inner}</a>
-                ) : <div key={label}>{inner}</div>;
+                return href
+                  ? <a key={label} href={href} style={{ textDecoration:'none', transition:'opacity 0.2s' }}
+                      onMouseEnter={e => e.currentTarget.style.opacity='0.7'}
+                      onMouseLeave={e => e.currentTarget.style.opacity='1'}>{inner}</a>
+                  : <div key={label}>{inner}</div>;
               })}
             </div>
           </motion.div>
 
-          {/* Right — glass form (matches left card) */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            style={{ height: '100%' }}
-          >
-            <form
-              onSubmit={handleSubmit}
-              style={{
-                ...glassCard,
-                position: 'relative',
-                height: '100%',
-                transition: 'box-shadow 0.2s ease',
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.boxShadow = '0 12px 36px rgba(103,159,158,0.13), inset 0 1px 0 rgba(255,255,255,0.9)';
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.boxShadow = '0 4px 24px rgba(134,117,153,0.07), inset 0 1px 0 rgba(255,255,255,0.85)';
-              }}
+          {/* Right — crystal glass form */}
+          <motion.div initial={{ opacity:0, x:20 }} whileInView={{ opacity:1, x:0 }}>
+            <form onSubmit={handleSubmit}
+              style={{ ...crystalCard, position:'relative', transition:'box-shadow 0.25s ease' }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.95), 0 16px 48px rgba(180,160,255,0.18), 0 0 0 1px rgba(200,180,255,0.3)'; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.95), inset 0 -1px 1px rgba(200,200,255,0.18), 0 8px 32px rgba(150,150,220,0.09), 0 2px 8px rgba(200,180,255,0.07)'; }}
             >
-              {/* Top accent line — mirrors left card's gradient border */}
+              {/* Top prismatic accent line */}
               <div aria-hidden style={{
-                position: 'absolute', top: 0, left: '32px', right: '32px', height: '2px',
-                borderRadius: '0 0 2px 2px',
-                background: 'linear-gradient(to right, transparent, #679F9E55, #E1829844, transparent)',
-                pointerEvents: 'none',
+                position:'absolute', top:0, left:'28px', right:'28px', height:'2px', borderRadius:'0 0 2px 2px',
+                background:'linear-gradient(to right, transparent, rgba(200,180,255,0.6), rgba(180,220,255,0.5), transparent)',
+                boxShadow:'0 0 6px rgba(200,180,255,0.2)',
+                pointerEvents:'none',
               }} />
 
-              {/* Three dots top-right — decorative */}
-              <div aria-hidden style={{ position: 'absolute', top: '20px', right: '24px', display: 'flex', gap: '5px', pointerEvents: 'none' }}>
-                {['#E18298', '#679F9E', '#867599'].map((c, i) => (
-                  <div key={i} style={{ width: '7px', height: '7px', borderRadius: '50%', background: c, opacity: 0.4 }} />
+              {/* Three crystal dots */}
+              <div aria-hidden style={{ position:'absolute', top:'18px', right:'22px', display:'flex', gap:'5px', pointerEvents:'none' }}>
+                {['rgba(200,180,255,0.7)', 'rgba(180,220,255,0.65)', 'rgba(255,200,220,0.65)'].map((c, i) => (
+                  <div key={i} style={{ width:'7px', height:'7px', borderRadius:'50%', background:c, boxShadow:`0 0 5px ${c}` }} />
                 ))}
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', position: 'relative', zIndex: 1, paddingTop: '8px' }}>
+              <div style={{ display:'flex', flexDirection:'column', gap:'18px', position:'relative', zIndex:1, paddingTop:'10px' }}>
                 {[
-                  { id: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
-                  { id: 'email', label: 'Email', type: 'email', placeholder: 'your.email@example.com' },
+                  { id:'name',  label:'Name',  type:'text',  placeholder:'Your name' },
+                  { id:'email', label:'Email', type:'email', placeholder:'your.email@example.com' },
                 ].map(({ id, label, type, placeholder }) => (
                   <div key={id}>
-                    <label htmlFor={id} style={{ display: 'block', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#867599', marginBottom: '8px' }}>
+                    <label htmlFor={id} style={{ display:'block', fontSize:'11px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(120,100,180,0.85)', marginBottom:'8px' }}>
                       {label}
                     </label>
-                    <input
-                      type={type} id={id} name={id}
+                    <input type={type} id={id} name={id}
                       value={formData[id as keyof typeof formData]}
-                      onChange={handleChange}
-                      required placeholder={placeholder}
-                      style={inputStyle}
-                      onFocus={e => { e.target.style.borderColor = '#679F9E88'; e.target.style.boxShadow = '0 0 0 3px rgba(103,159,158,0.12)'; e.target.style.background = 'rgba(255,255,255,0.85)'; }}
-                      onBlur={e => { e.target.style.borderColor = 'rgba(134,117,153,0.2)'; e.target.style.boxShadow = 'none'; e.target.style.background = 'rgba(255,255,255,0.6)'; }}
+                      onChange={handleChange} required placeholder={placeholder}
+                      style={crystalInput}
+                      onFocus={e => { e.target.style.borderColor='rgba(200,180,255,0.6)'; e.target.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.9), 0 0 0 3px rgba(200,180,255,0.15)'; e.target.style.background='rgba(255,255,255,0.5)'; }}
+                      onBlur={e => { e.target.style.borderColor='rgba(255,255,255,0.5)'; e.target.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.9)'; e.target.style.background='rgba(255,255,255,0.35)'; }}
                     />
                   </div>
                 ))}
 
                 <div>
-                  <label htmlFor="message" style={{ display: 'block', fontSize: '12px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#867599', marginBottom: '8px' }}>
+                  <label htmlFor="message" style={{ display:'block', fontSize:'11px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(120,100,180,0.85)', marginBottom:'8px' }}>
                     Message
                   </label>
-                  <textarea
-                    id="message" name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required rows={4}
+                  <textarea id="message" name="message" value={formData.message}
+                    onChange={handleChange} required rows={4}
                     placeholder="Tell me about your project..."
-                    style={{ ...inputStyle, resize: 'none' }}
-                    onFocus={e => { e.target.style.borderColor = '#679F9E88'; e.target.style.boxShadow = '0 0 0 3px rgba(103,159,158,0.12)'; e.target.style.background = 'rgba(255,255,255,0.85)'; }}
-                    onBlur={e => { e.target.style.borderColor = 'rgba(134,117,153,0.2)'; e.target.style.boxShadow = 'none'; e.target.style.background = 'rgba(255,255,255,0.6)'; }}
+                    style={{ ...crystalInput, resize:'none' }}
+                    onFocus={e => { e.target.style.borderColor='rgba(200,180,255,0.6)'; e.target.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.9), 0 0 0 3px rgba(200,180,255,0.15)'; e.target.style.background='rgba(255,255,255,0.5)'; }}
+                    onBlur={e => { e.target.style.borderColor='rgba(255,255,255,0.5)'; e.target.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.9)'; e.target.style.background='rgba(255,255,255,0.35)'; }}
                   />
                 </div>
 
-                {/* Hairline divider before button */}
-                <div style={{ height: '1px', background: 'linear-gradient(to right, transparent, #86759933, transparent)' }} />
+                {/* Prismatic hairline */}
+                <div style={{ height:'1px', background:'linear-gradient(to right, transparent, rgba(200,180,255,0.4), rgba(180,220,255,0.3), transparent)' }} />
 
-                <motion.button
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                <motion.button type="submit"
+                  whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }}
                   style={{
-                    width: '100%', padding: '12px 24px',
-                    borderRadius: '10px',
-                    background: 'linear-gradient(135deg, #E18298, #c96e85)',
-                    border: 'none',
-                    color: '#fff', fontSize: '15px', fontWeight: 500,
-                    cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                    boxShadow: '0 4px 14px rgba(225,130,152,0.3)',
-                    transition: 'all 0.2s',
+                    width:'100%', padding:'13px 24px', borderRadius:'10px',
+                    background:'linear-gradient(135deg, rgba(200,180,255,0.85) 0%, rgba(180,200,255,0.75) 50%, rgba(210,180,255,0.8) 100%)',
+                    backdropFilter:'blur(12px)',
+                    border:'1px solid rgba(255,255,255,0.65)',
+                    color:'rgba(40,20,90,0.9)', fontSize:'15px', fontWeight:600,
+                    cursor:'pointer',
+                    display:'flex', alignItems:'center', justifyContent:'center', gap:'8px',
+                    boxShadow:'inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 18px rgba(180,160,255,0.3)',
+                    transition:'all 0.2s',
+                    letterSpacing:'0.02em',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px 20px rgba(225,130,152,0.42)'; e.currentTarget.style.background = 'linear-gradient(135deg, #d9758a, #bf5e78)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 4px 14px rgba(225,130,152,0.3)'; e.currentTarget.style.background = 'linear-gradient(135deg, #E18298, #c96e85)'; }}
+                  onMouseEnter={e => { e.currentTarget.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.95), 0 8px 28px rgba(180,160,255,0.45), 0 0 0 1px rgba(255,255,255,0.4)'; e.currentTarget.style.background='linear-gradient(135deg, rgba(210,190,255,0.92) 0%, rgba(190,215,255,0.85) 50%, rgba(220,190,255,0.88) 100%)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.boxShadow='inset 0 1px 2px rgba(255,255,255,0.9), 0 4px 18px rgba(180,160,255,0.3)'; e.currentTarget.style.background='linear-gradient(135deg, rgba(200,180,255,0.85) 0%, rgba(180,200,255,0.75) 50%, rgba(210,180,255,0.8) 100%)'; }}
                 >
-                  <FaPaperPlane style={{ fontSize: '13px' }} />
+                  <FaPaperPlane style={{ fontSize:'13px' }} />
                   Send Message
                 </motion.button>
               </div>
