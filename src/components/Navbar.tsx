@@ -1,62 +1,66 @@
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const sections = [
-  { id: 'hero', label: 'Home', bgType: 'light' },
-  { id: 'about', label: 'About', bgType: 'dark' },
-  { id: 'skills', label: 'Skills', bgType: 'light' },
-  { id: 'projects', label: 'Projects', bgType: 'dark' },
-  { id: 'contact', label: 'Contact', bgType: 'light' },
+type BgType = 'light' | 'dark';
+
+const sections: { id: string; label: string; bgType: BgType }[] = [
+  { id: 'hero',     label: 'Home',     bgType: 'light' },
+  { id: 'about',    label: 'About',    bgType: 'dark'  },
+  { id: 'skills',   label: 'Skills',   bgType: 'light' },
+  { id: 'projects', label: 'Projects', bgType: 'dark'  },
+  { id: 'contact',  label: 'Contact',  bgType: 'light' },
 ];
 
-const getTextColor = (isActive: boolean, bgType: string) => {
-  if (bgType === 'light') {
-    return isActive ? 'rgba(99, 102, 241, 0.96)' : 'rgba(120, 125, 255, 0.8)';
-  }
-  return isActive ? 'rgba(240, 232, 255, 0.96)' : 'rgba(220, 210, 245, 0.85)';
-};
-
-const getTextHoverColor = (bgType: string) => {
-  if (bgType === 'light') {
-    return 'rgba(99, 102, 241, 0.92)';
-  }
-  return 'rgba(240, 232, 255, 0.92)';
-};
-
-const getInactiveColor = (bgType: string) => {
-  if (bgType === 'light') {
-    return 'rgba(120, 125, 255, 0.8)';
-  }
-  return 'rgba(220, 210, 245, 0.85)';
+const colors = {
+light: {
+  active:      'rgba(23, 32, 59, 0.92)',
+  inactive:    'rgba(23, 32, 59, 0.28)',
+  hover:       'rgba(23, 32, 59, 0.6)',
+  dot:         '#17203B',
+  dotGlow:     '0 0 0 3px rgba(23, 32, 59, 0.08), 0 0 10px rgba(23, 32, 59, 0.35)',
+  dotInactive: 'rgba(23, 32, 59, 0.18)',
+  track:       'linear-gradient(to bottom, transparent, rgba(23, 32, 59, 0.25), rgba(23, 32, 59, 0.2), transparent)',
+  dash:        '#17203B',
+  dashGlow:    'rgba(23, 32, 59, 0.3)',
+  textShadow:  'none',
+},
+  dark: {
+    active:      'rgba(255, 255, 255, 0.95)',
+    inactive:    'rgba(255, 255, 255, 0.28)',
+    hover:       'rgba(255, 255, 255, 0.65)',
+    dot:         '#ffffff',
+    dotGlow:     '0 0 0 3px rgba(255,255,255,0.1), 0 0 12px rgba(255,255,255,0.6)',
+    dotInactive: 'rgba(255,255,255,0.18)',
+    track:       'linear-gradient(to bottom, transparent, rgba(255,255,255,0.22), rgba(255,255,255,0.18), transparent)',
+    dash:        '#ffffff',
+    dashGlow:    'rgba(255,255,255,0.4)',
+    textShadow:  'none',
+  },
 };
 
 function Navbar() {
   const [activeSection, setActiveSection] = useState('hero');
-  const activeBgType = sections.find(s => s.id === activeSection)?.bgType || 'dark';
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+
+  const activeBgType = sections.find(s => s.id === activeSection)?.bgType ?? 'light';
+  const c = colors[activeBgType];
 
   useEffect(() => {
     const onScroll = () => {
       let current = 'hero';
       let bestScore = Number.POSITIVE_INFINITY;
-
       sections.forEach(({ id }) => {
         const el = document.getElementById(id);
         if (!el) return;
-
         const rect = el.getBoundingClientRect();
         const score = Math.abs(rect.top - window.innerHeight * 0.24);
-        if (score < bestScore) {
-          bestScore = score;
-          current = id;
-        }
+        if (score < bestScore) { bestScore = score; current = id; }
       });
-
       setActiveSection(current);
     };
-
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
-
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
@@ -64,108 +68,100 @@ function Navbar() {
   }, []);
 
   return (
-    <aside
-      style={{
-        position: 'fixed',
-        top: '18px',
-        right: '18px',
-        zIndex: 60,
-      }}
-    >
+    <aside style={{ position: 'fixed', top: 0, right: 0, zIndex: 60, padding: '2px 4px' }}>
       <nav
         aria-label="Primary"
-        style={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px',
-          paddingLeft: '16px',
-        }}
+        style={{ display: 'flex', flexDirection: 'column', gap: '6px', position: 'relative', paddingLeft: '20px' }}
       >
-        {/* Liquid glass background */}
-        <div
+        {/* Track */}
+        <div aria-hidden style={{
+          position: 'absolute', left: '3px', top: '8px', bottom: '8px',
+          width: '1px', borderRadius: '2px',
+          background: c.track,
+          transition: 'background 0.4s ease',
+          opacity: 0.7,
+        }} />
+
+        {/* Gliding orb */}
+        <motion.div
           aria-hidden
           style={{
-            position: 'absolute',
-            inset: '-8px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, rgba(88, 76, 144, 0.24), rgba(68, 58, 118, 0.18))',
-            backdropFilter: 'blur(14px) saturate(160%)',
-            WebkitBackdropFilter: 'blur(14px) saturate(160%)',
-            border: '1px solid rgba(218, 202, 255, 0.22)',
-            boxShadow: 'inset 0 1px 2px rgba(255, 255, 255, 0.28), 0 8px 24px rgba(40, 30, 80, 0.12)',
-            pointerEvents: 'none',
-            zIndex: -1,
+            position: 'absolute', left: '-1px',
+            width: '9px', height: '9px', borderRadius: '50%',
+            background: c.dot,
+            boxShadow: c.dotGlow,
+            transition: 'background 0.35s ease, box-shadow 0.35s ease',
           }}
+          animate={{ top: `${sections.findIndex(s => s.id === activeSection) * 34 + 4}px` }}
+          transition={{ type: 'spring', stiffness: 280, damping: 28 }}
         />
 
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            left: '4px',
-            top: '8px',
-            bottom: '8px',
-            width: '2px',
-            borderRadius: '999px',
-            background: 'repeating-linear-gradient(to bottom, rgba(175, 160, 205, 0.75) 0 2px, transparent 2px 8px)',
-          }}
-        />
+        {sections.map(({ id, label }) => {
+          const isActive = activeSection === id;
+          const isHovered = hoveredSection === id && !isActive;
 
-        {sections.map(({ id, label }) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            onClick={() => setActiveSection(id)}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              textDecoration: 'none',
-              color: getTextColor(activeSection === id, activeBgType),
-              fontSize: '13px',
-              fontWeight: 500,
-              letterSpacing: '0.02em',
-              transition: 'color 0.2s',
-              textShadow: activeSection === id
-                ? activeBgType === 'light'
-                  ? '0 0 8px rgba(99, 102, 241, 0.3)'
-                  : '0 0 8px rgba(240, 160, 128, 0.28)'
-                : 'none',
-            }}
-            onMouseEnter={e => {
-              if (activeSection !== id) {
-                e.currentTarget.style.color = getTextHoverColor(activeBgType);
-              }
-            }}
-            onMouseLeave={e => {
-              if (activeSection !== id) {
-                e.currentTarget.style.color = getInactiveColor(activeBgType);
-              }
-            }}
-          >
-            <span
-              aria-hidden
+          return (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={() => setActiveSection(id)}
+              onMouseEnter={() => setHoveredSection(id)}
+              onMouseLeave={() => setHoveredSection(null)}
               style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: activeSection === id
-                  ? activeBgType === 'light'
-                    ? '#6366f1'
-                    : '#f0a080'
-                  : 'rgba(170, 155, 200, 0.9)',
-                boxShadow: activeSection === id
-                  ? activeBgType === 'light'
-                    ? '0 0 0 3px rgba(99, 102, 241, 0.22), 0 0 10px rgba(99, 102, 241, 0.85)'
-                    : '0 0 0 3px rgba(240, 160, 128, 0.24), 0 0 10px rgba(240, 160, 128, 0.8)'
-                  : 'none',
-                transition: 'all 0.2s',
+                display: 'inline-flex', alignItems: 'center', gap: '10px',
+                height: '28px', textDecoration: 'none',
+                color: isActive ? c.active : isHovered ? c.hover : c.inactive,
+                fontSize: '11px',
+                fontWeight: isActive ? 700 : 400,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                transition: 'color 0.2s, transform 0.2s',
+                transform: isHovered ? 'translateX(3px)' : 'translateX(0)',
+                userSelect: 'none',
               }}
-            />
-            <span>{label}</span>
-          </a>
-        ))}
+            >
+              {/* Tick bar */}
+              <span aria-hidden style={{
+                width: '2px',
+                height: isActive ? '18px' : '4px',
+                borderRadius: '1px',
+                background: isActive ? c.dot : c.dotInactive,
+                boxShadow: isActive ? c.dotGlow : 'none',
+                transition: 'height 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.3s, box-shadow 0.3s',
+                flexShrink: 0,
+                display: 'inline-block',
+              }} />
+
+              <span style={{
+                opacity: isActive ? 1 : isHovered ? 0.8 : 0.45,
+                transition: 'opacity 0.2s',
+              }}>
+                {label}
+              </span>
+
+              {/* Trailing dash */}
+              <AnimatePresence>
+                {isActive && (
+                  <motion.span
+                    aria-hidden key="dash"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    animate={{ scaleX: 1, opacity: 1 }}
+                    exit={{ scaleX: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeOut' }}
+                    style={{
+                      display: 'inline-block',
+                      width: '14px', height: '1px',
+                      borderRadius: '1px',
+                      background: c.dash,
+                      opacity: 0.6,
+                      transformOrigin: 'left',
+                    }}
+                  />
+                )}
+              </AnimatePresence>
+            </a>
+          );
+        })}
       </nav>
     </aside>
   );
