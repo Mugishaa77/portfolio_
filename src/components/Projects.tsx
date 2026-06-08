@@ -7,6 +7,8 @@ import nv from '../media/nv.png';
 import discoverGolf from '../media/discover_golf.png';
 import vegrid from '../media/vegrid.png';
 
+// Fix build errors
+
 const featuredProjects = [
   {
     title: "VeGrid",
