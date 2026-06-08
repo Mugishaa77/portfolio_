@@ -5,8 +5,21 @@ import taskManager from '../media/task-manager.png';
 import nexus from '../media/nexus.jpg';
 import nv from '../media/nv.png';
 import discoverGolf from '../media/discover_golf.png';
+import vegrid from '../media/vegrid.png';
 
 const featuredProjects = [
+  {
+    title: "VeGrid",
+    description: "A Solar-as-a-Service energy management platform for smart grids, real-time monitoring, predictive analytics, and optimization of energy distribution.",
+    tech: ["Django", "Docker", "MicroServices"],
+     image: vegrid,
+    codeLink: "https://github.com/Vegrid",
+    liveLink: "https://www.vegrid.co.ke/",
+    role: "FullStack",
+    accent: '#a8d8c8',
+  
+
+  },
   {
     title: "Discover Golf",
     description: "Online presence for a golf platform for children and other interested parties.",
