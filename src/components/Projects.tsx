@@ -5,7 +5,7 @@ import taskManager from '../media/task-manager.png';
 import nexus from '../media/nexus.jpg';
 import nv from '../media/nv.png';
 import discoverGolf from '../media/discover_golf.png';
-import vegrid from '../media/vegrid.png';
+import vegrid from '../media/Vegrid.png';
 
 // Fix build errors
 
