@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "baseline-browser-mapping": "^2.11.12",
     "expo": "^54.0.18",
     "expo-updates": "~29.0.12",
     "framer-motion": "^12.23.24",

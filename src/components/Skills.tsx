@@ -1,9 +1,10 @@
 import { motion } from 'framer-motion';
 import {
   SiDjango, SiPython, SiReact, SiTypescript, SiTailwindcss,
-  SiNextdotjs, SiPostgresql, SiDocker, SiGit, SiLinux,
+  SiNextdotjs, SiPostgresql, SiDocker, SiGit, SiLinux, SiVite,
+  SiNodedotjs, SiPrisma,
 } from 'react-icons/si';
-import { FaServer, FaDatabase, FaKey, FaUsers } from 'react-icons/fa';
+import { FaServer, FaDatabase, FaKey, FaUsers, FaTachometerAlt, FaBook, FaProjectDiagram, FaTerminal } from 'react-icons/fa';
 
 const skills = [
   { icon: SiDjango, name: 'Django', category: 'backend' },
@@ -11,48 +12,55 @@ const skills = [
   { icon: FaServer, name: 'REST APIs', category: 'backend' },
   { icon: SiPostgresql, name: 'PostgreSQL', category: 'backend' },
   { icon: SiDocker, name: 'Docker', category: 'backend' },
+  { icon: SiNodedotjs, name: 'Node.js', category: 'backend' },
+  { icon: SiPrisma, name: 'Prisma', category: 'backend' },
+  { icon: FaProjectDiagram, name: 'Data Structures & Algorithms', category: 'backend' },
   { icon: SiReact, name: 'React', category: 'frontend' },
   { icon: SiTypescript, name: 'TypeScript', category: 'frontend' },
+  { icon: SiVite, name: 'Vite', category: 'frontend' },
   { icon: SiTailwindcss, name: 'Tailwind', category: 'frontend' },
   { icon: SiNextdotjs, name: 'Next.js', category: 'frontend' },
+  { icon: FaTachometerAlt, name: 'LCP / Web Vitals', category: 'frontend' },
   { icon: SiGit, name: 'Git/GitHub', category: 'devops' },
   { icon: SiLinux, name: 'Linux', category: 'devops' },
   { icon: FaKey, name: 'JWT Auth', category: 'devops' },
   { icon: FaDatabase, name: 'MySQL', category: 'devops' },
   { icon: FaUsers, name: 'Atlassian', category: 'devops' },
+  { icon: FaBook, name: 'Documentation', category: 'devops' },
+  { icon: FaTerminal, name: 'Scripting', category: 'devops' },
 ];
 
 const categoryMeta = {
-  backend: { label: 'Backend & APIs', accent: '#679F9E', glow: '#679F9E22' },
-  frontend: { label: 'Frontend', accent: '#7DADDB', glow: '#7DADDB22' },
-  devops: { label: 'DevOps & Tools', accent: '#E18298', glow: '#E1829822' },
+  backend: { label: 'Backend & APIs', accent: '#457534' },
+  frontend: { label: 'Frontend', accent: '#F58F1F' },
+  devops: { label: 'DevOps & Tools', accent: '#7D8285' },
 };
 
 // ALL skills as ghosted icons, distributed to fill the right side vertically
 const ghostIcons = [
-  // Top area
-  { Icon: SiDjango, color: '#679F9E', top: '3%', left: '82%', size: 58, delay: 0, duration: 14, xOffset: 8, yOffset: -6 },
-  { Icon: SiPython, color: '#7DADDB', top: '10%', left: '88%', size: 62, delay: 1, duration: 12, xOffset: -10, yOffset: 8 },
-  { Icon: FaServer, color: '#E18298', top: '18%', left: '78%', size: 54, delay: 2, duration: 15, xOffset: 6, yOffset: -4 },
-  
-  // Upper-mid (around the dot arc)
-  { Icon: SiPostgresql, color: '#867599', top: '26%', left: '86%', size: 66, delay: 1.5, duration: 13, xOffset: -8, yOffset: 10 },
-  { Icon: SiDocker, color: '#679F9E', top: '34%', left: '80%', size: 60, delay: 0.8, duration: 11, xOffset: 10, yOffset: -8 },
-  { Icon: SiReact, color: '#7DADDB', top: '42%', left: '89%', size: 68, delay: 2.2, duration: 16, xOffset: -6, yOffset: 6 },
-  
-  // Mid (overlapping dot arc area)
-  { Icon: SiTypescript, color: '#E18298', top: '50%', left: '84%', size: 56, delay: 1.2, duration: 14, xOffset: 8, yOffset: -5 },
-  { Icon: SiTailwindcss, color: '#679F9E', top: '58%', left: '91%', size: 52, delay: 2.8, duration: 12, xOffset: -12, yOffset: 9 },
-  { Icon: SiNextdotjs, color: '#7DADDB', top: '66%', left: '79%', size: 64, delay: 0.5, duration: 15, xOffset: 7, yOffset: -7 },
-  
-  // Lower-mid
-  { Icon: SiGit, color: '#867599', top: '74%', left: '87%', size: 58, delay: 1.8, duration: 13, xOffset: -9, yOffset: 8 },
-  { Icon: SiLinux, color: '#E18298', top: '82%', left: '81%', size: 60, delay: 2.5, duration: 11, xOffset: 6, yOffset: -6 },
-  { Icon: FaKey, color: '#679F9E', top: '88%', left: '90%', size: 54, delay: 0.3, duration: 14, xOffset: -7, yOffset: 5 },
-  
-  // Bottom area
-  { Icon: FaDatabase, color: '#7DADDB', top: '94%', left: '83%', size: 56, delay: 1.9, duration: 12, xOffset: 8, yOffset: -4 },
-  { Icon: FaUsers, color: '#E18298', top: '98%', left: '77%', size: 52, delay: 3, duration: 15, xOffset: -5, yOffset: 6 },
+  { Icon: SiDjango,         color: '#457534', top: '3%',  left: '82%', size: 58, delay: 0,   duration: 14, xOffset: 8,   yOffset: -6 },
+  { Icon: SiPython,         color: '#457534', top: '8%',  left: '88%', size: 62, delay: 0.3, duration: 12, xOffset: -10, yOffset: 8  },
+  { Icon: FaServer,         color: '#457534', top: '13%', left: '78%', size: 54, delay: 0.6, duration: 15, xOffset: 6,   yOffset: -4 },
+  { Icon: SiPostgresql,     color: '#457534', top: '18%', left: '86%', size: 66, delay: 0.9, duration: 13, xOffset: -8,  yOffset: 10 },
+  { Icon: SiDocker,         color: '#457534', top: '23%', left: '80%', size: 60, delay: 1.2, duration: 11, xOffset: 10,  yOffset: -8 },
+  { Icon: SiNodedotjs,      color: '#457534', top: '28%', left: '89%', size: 56, delay: 1.5, duration: 16, xOffset: -6,  yOffset: 6  },
+  { Icon: SiPrisma,         color: '#457534', top: '33%', left: '84%', size: 52, delay: 1.8, duration: 14, xOffset: 8,   yOffset: -5 },
+  { Icon: FaProjectDiagram, color: '#457534', top: '38%', left: '91%', size: 60, delay: 2.1, duration: 12, xOffset: -12, yOffset: 9  },
+
+  { Icon: SiReact,          color: '#F58F1F', top: '43%', left: '79%', size: 68, delay: 2.4, duration: 15, xOffset: 7,   yOffset: -7 },
+    { Icon: SiVite,           color: '#F58F1F', top: '50%', left: '75%', size: 56, delay: 2.5, duration: 13, xOffset: 6,   yOffset: -6 },
+  { Icon: SiTypescript,     color: '#F58F1F', top: '48%', left: '87%', size: 56, delay: 2.7, duration: 13, xOffset: -9,  yOffset: 8  },
+  { Icon: SiTailwindcss,    color: '#F58F1F', top: '53%', left: '81%', size: 52, delay: 3,   duration: 11, xOffset: 6,   yOffset: -6 },
+  { Icon: SiNextdotjs,      color: '#F58F1F', top: '58%', left: '90%', size: 64, delay: 0.4, duration: 14, xOffset: -7,  yOffset: 5  },
+  { Icon: FaTachometerAlt,  color: '#F58F1F', top: '63%', left: '83%', size: 54, delay: 0.7, duration: 12, xOffset: 8,   yOffset: -4 },
+
+  { Icon: SiGit,            color: '#7D8285', top: '68%', left: '77%', size: 58, delay: 1,   duration: 15, xOffset: -5,  yOffset: 6  },
+  { Icon: SiLinux,          color: '#7D8285', top: '73%', left: '85%', size: 60, delay: 1.3, duration: 13, xOffset: 9,   yOffset: -8 },
+  { Icon: FaKey,            color: '#7D8285', top: '78%', left: '90%', size: 54, delay: 1.6, duration: 11, xOffset: -6,  yOffset: 7  },
+  { Icon: FaDatabase,       color: '#7D8285', top: '83%', left: '80%', size: 56, delay: 1.9, duration: 14, xOffset: 7,   yOffset: -5 },
+  { Icon: FaUsers,          color: '#7D8285', top: '88%', left: '88%', size: 52, delay: 2.2, duration: 12, xOffset: -8,  yOffset: 6  },
+  { Icon: FaBook,           color: '#7D8285', top: '93%', left: '82%', size: 58, delay: 2.5, duration: 16, xOffset: 6,   yOffset: -6 },
+  { Icon: FaTerminal,       color: '#7D8285', top: '98%', left: '86%', size: 54, delay: 2.8, duration: 13, xOffset: -7,  yOffset: 8  },
 ];
 
 const Skills = () => {
@@ -83,19 +91,16 @@ const Skills = () => {
     <section
       id="skills"
       className="py-20 px-6 md:px-12 relative overflow-hidden"
-      style={{
-        background: `
-          radial-gradient(ellipse at 0% 0%, #E6D4BE18 0%, transparent 55%),
-          radial-gradient(ellipse at 100% 100%, #86759918 0%, transparent 55%),
-          radial-gradient(ellipse at 80% 10%, #679F9E12 0%, transparent 45%),
-          linear-gradient(175deg, #faf8f5 0%, #f3ede6 50%, #eee6dc 100%)
-        `,
-      }}
+      style={{ background: '#F7F4EC' }}
     >
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;1,500;1,600&display=swap');
+      `}</style>
+
       {/* Wavy SVG divider top */}
       <div aria-hidden style={{ position: 'absolute', top: 0, left: 0, right: 0, lineHeight: 0 }}>
         <svg viewBox="0 0 1440 48" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%' }}>
-          <path d="M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,0 L0,0 Z" fill="#16213e" fillOpacity="0.06" />
+          <path d="M0,24 C240,48 480,0 720,24 C960,48 1200,0 1440,24 L1440,0 L0,0 Z" fill="#26221E" fillOpacity="0.06" />
         </svg>
       </div>
 
@@ -103,14 +108,14 @@ const Skills = () => {
       <div aria-hidden style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         backgroundImage: `
-          linear-gradient(#86759910 1px, transparent 1px),
-          linear-gradient(90deg, #86759910 1px, transparent 1px)
+          linear-gradient(#7D828510 1px, transparent 1px),
+          linear-gradient(90deg, #7D828510 1px, transparent 1px)
         `,
         backgroundSize: '48px 48px',
         maskImage: 'radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%)',
       }} />
 
-      {/* === ALL GHOSTED ICONS (14 icons, filling the right side from top to bottom) === */}
+      {/* === ALL GHOSTED ICONS (20 icons, filling the right side from top to bottom) === */}
       {ghostIcons.map(({ Icon, color, top, left, size, delay, duration, xOffset, yOffset }, idx) => (
         <motion.div
           key={idx}
@@ -153,7 +158,7 @@ const Skills = () => {
             A ${radiusX} ${radiusY} 0 0 1 ${dots[dots.length - 1].left}% ${dots[dots.length - 1].top}%
           `}
           fill="none"
-          stroke="#E18298"
+          stroke="#457534"
           strokeWidth="1.2"
           strokeDasharray="3 6"
           opacity="0.4"
@@ -183,8 +188,8 @@ const Skills = () => {
             width: '6px',
             height: '6px',
             borderRadius: '50%',
-            background: i % 3 === 0 ? '#E18298' : (i % 3 === 1 ? '#7DADDB' : '#679F9E'),
-            boxShadow: `0 0 8px ${i % 3 === 0 ? '#E18298' : (i % 3 === 1 ? '#7DADDB' : '#679F9E')}`,
+            background: i % 3 === 0 ? '#457534' : (i % 3 === 1 ? '#F58F1F' : '#7D8285'),
+            boxShadow: `0 0 8px ${i % 3 === 0 ? '#457534' : (i % 3 === 1 ? '#F58F1F' : '#7D8285')}`,
             pointerEvents: 'none',
             zIndex: 0,
           }}
@@ -201,18 +206,32 @@ const Skills = () => {
         >
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '8px',
-            marginBottom: '16px', padding: '4px 14px',
-            borderRadius: '999px',
-            border: '1px solid #86759944',
-            background: '#86759910',
+            marginBottom: '16px',
           }}>
-            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#E18298', display: 'inline-block' }} />
-            <span style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#867599', fontWeight: 500 }}>
-              Tech Stack
-            </span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#457534', display: 'inline-block' }} />
+            <p style={{
+              fontFamily: "'EB Garamond', Georgia, serif",
+              fontStyle: 'italic', fontSize: '17px', color: '#457534',
+            }}>
+              My tech stack
+            </p>
           </div>
-          <h2 className="text-3xl md:text-4xl font-light text-azur mb-3">Tech Stack</h2>
-          <p style={{ color: '#6b7280' }}>Tools and technologies I work with daily</p>
+          <h2 style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontWeight: 500,
+            fontSize: 'clamp(2.2rem, 4.5vw, 3.2rem)',
+            color: '#363636',
+            marginBottom: '10px',
+            letterSpacing: '-0.01em',
+          }}>
+            Skills & tools<span style={{ color: '#F58F1F' }}>.</span>
+          </h2>
+          <p style={{
+            fontFamily: "'EB Garamond', Georgia, serif",
+            fontSize: '18px', color: '#7D8285',
+          }}>
+            Tools and technologies I use for systems, UIs, and modern React frameworks
+          </p>
         </motion.div>
 
         {/* Skill groups */}
@@ -229,8 +248,9 @@ const Skills = () => {
                     boxShadow: `0 0 8px ${meta.accent}88`,
                   }} />
                   <h3 style={{
-                    fontSize: '11px', fontWeight: 600,
-                    letterSpacing: '0.13em', textTransform: 'uppercase',
+                    fontFamily: "'EB Garamond', Georgia, serif",
+                    fontStyle: 'italic',
+                    fontSize: '17px',
                     color: meta.accent,
                   }}>
                     {meta.label}
@@ -263,26 +283,26 @@ const Skills = () => {
                         justifyContent: 'center',
                         gap: '8px',
                         padding: '16px 20px',
-                        borderRadius: '14px',
-                        border: `1px solid ${meta.accent}28`,
-                        background: `linear-gradient(145deg, #ffffff, #faf8f5)`,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+                        borderRadius: '8px',
+                        border: `1px solid #363636`,
+                        background: '#FFFDF8',
                         transition: 'all 0.2s ease',
                         cursor: 'default',
                       }}
                         onMouseEnter={e => {
-                          (e.currentTarget as HTMLDivElement).style.borderColor = `${meta.accent}66`;
-                          (e.currentTarget as HTMLDivElement).style.boxShadow = `0 6px 20px ${meta.accent}22`;
-                          (e.currentTarget as HTMLDivElement).style.background = `linear-gradient(145deg, #fff, ${meta.glow})`;
+                          (e.currentTarget as HTMLDivElement).style.borderColor = `${meta.accent}`;
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = `4px 4px 0 ${meta.accent}`;
                         }}
                         onMouseLeave={e => {
-                          (e.currentTarget as HTMLDivElement).style.borderColor = `${meta.accent}28`;
-                          (e.currentTarget as HTMLDivElement).style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
-                          (e.currentTarget as HTMLDivElement).style.background = 'linear-gradient(145deg, #ffffff, #faf8f5)';
+                          (e.currentTarget as HTMLDivElement).style.borderColor = '#363636';
+                          (e.currentTarget as HTMLDivElement).style.boxShadow = 'none';
                         }}
                       >
                         <skill.icon style={{ fontSize: '26px', color: meta.accent }} />
-                        <span style={{ fontSize: '12px', fontWeight: 500, color: '#4b5563', whiteSpace: 'nowrap' }}>
+                        <span style={{
+                          fontFamily: "'EB Garamond', Georgia, serif",
+                          fontSize: '13px', color: '#5C5F61', whiteSpace: 'nowrap',
+                        }}>
                           {skill.name}
                         </span>
                       </div>
@@ -304,15 +324,17 @@ const Skills = () => {
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '10px',
             padding: '10px 20px',
-            borderRadius: '999px',
-            border: '1px solid #86759933',
-            background: 'rgba(255,255,255,0.7)',
-            backdropFilter: 'blur(8px)',
-            boxShadow: '0 2px 12px rgba(134,117,153,0.08)',
+            borderRadius: '8px',
+            border: '1px solid #363636',
+            background: '#FFFDF8',
           }}>
             <span style={{ fontSize: '14px' }}>⚡</span>
-            <p style={{ fontSize: '12px', color: '#6b7280' }}>
-              Full‑stack engineer • Django + React • Agile practitioner
+            <p style={{
+              fontFamily: "'EB Garamond', Georgia, serif",
+              fontStyle: 'italic',
+              fontSize: '14px', color: '#457534',
+            }}>
+              Full-stack engineer · Systems & UI · Next.js · Django
             </p>
           </div>
         </motion.div>
